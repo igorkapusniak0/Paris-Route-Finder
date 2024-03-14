@@ -10,15 +10,37 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.45" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+<SplitPane dividerPositions="0.45" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.parisroutefinder.HelloController">
     <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #CEEBED;">
             <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="838.0" layoutX="-5.0" layoutY="-6.0" stroke="TRANSPARENT" strokeType="INSIDE" width="669.0">
+                    <fill>
+                        <LinearGradient endX="0.037914691943127965" endY="1.0" startX="1.0" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.8078431487083435" green="0.9215686321258545" blue="0.929411768913269" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="0.8199999928474426" green="0.8199999928474426" blue="0.8199999928474426" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
                 <VBox layoutX="12.0" layoutY="96.0" prefHeight="635.0" prefWidth="635.0" style="-fx-border-width: 5; -fx-border-color: Black;">
                     <children>
-                        <ImageView fitHeight="630.0" fitWidth="630.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imageView" fitHeight="630.0" fitWidth="630.0" pickOnBounds="true" preserveRatio="true" />
                     </children>
                 </VBox>
                 <Button layoutX="289.0" layoutY="752.0" mnemonicParsing="false" text="Clear Map">
@@ -44,6 +66,29 @@
             </children></AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="739.0" prefWidth="535.0" style="-fx-background-color: #d3d3d3;">
             <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="838.0" stroke="#ffffff00" strokeType="INSIDE" width="858.0">
+                    <fill>
+                        <LinearGradient endX="1.0" endY="1.0" startX="0.14218009478672985" startY="1.0">
+                            <stops>
+                                <Stop>
+                                    <color>
+                                        <Color red="0.8078431487083435" green="0.9215686321258545" blue="0.929411768913269" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="0.006711409395973154">
+                                    <color>
+                                        <Color red="0.8078431487083435" green="0.9215686321258545" blue="0.929411768913269" />
+                                    </color>
+                                </Stop>
+                                <Stop offset="1.0">
+                                    <color>
+                                        <Color red="0.8199999928474426" green="0.8199999928474426" blue="0.8199999928474426" />
+                                    </color>
+                                </Stop>
+                            </stops>
+                        </LinearGradient>
+                    </fill>
+                </Rectangle>
                 <Button layoutX="41.0" layoutY="751.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="159.0" text="Calculate Route">
                     <font>
                         <Font name="Times New Roman Bold Italic" size="15.0" />
