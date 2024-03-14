@@ -1,16 +1,193 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.parisroutefinder.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<SplitPane dividerPositions="0.45" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21">
+    <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #CEEBED;">
+            <children>
+                <VBox layoutX="12.0" layoutY="96.0" prefHeight="635.0" prefWidth="635.0" style="-fx-border-width: 5; -fx-border-color: Black;">
+                    <children>
+                        <ImageView fitHeight="630.0" fitWidth="630.0" pickOnBounds="true" preserveRatio="true" />
+                    </children>
+                </VBox>
+                <Button layoutX="289.0" layoutY="752.0" mnemonicParsing="false" text="Clear Map">
+                    <font>
+                        <Font name="Times New Roman Bold Italic" size="15.0" />
+                    </font>
+                </Button>
+                <Button layoutX="375.0" layoutY="780.0" mnemonicParsing="false" text="Clear P.O.I's">
+                    <font>
+                        <Font name="Times New Roman Bold Italic" size="15.0" />
+                    </font>
+                </Button>
+                <Button layoutX="193.0" layoutY="780.0" mnemonicParsing="false" text="Clear Route">
+                    <font>
+                        <Font name="Times New Roman Bold Italic" size="15.0" />
+                    </font>
+                </Button>
+                <Label layoutX="160.0" layoutY="31.0" text="Paris Route Finder">
+                    <font>
+                        <Font name="Times New Roman Bold Italic" size="43.0" />
+                    </font>
+                </Label>
+            </children></AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="739.0" prefWidth="535.0" style="-fx-background-color: #d3d3d3;">
+            <children>
+                <Button layoutX="41.0" layoutY="751.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="159.0" text="Calculate Route">
+                    <font>
+                        <Font name="Times New Roman Bold Italic" size="15.0" />
+                    </font>
+                </Button>
+                <ComboBox layoutX="42.0" layoutY="676.0" prefHeight="49.0" prefWidth="181.0" promptText="Algorithms" />
+                <VBox layoutX="26.0" layoutY="206.0" prefHeight="417.0" prefWidth="218.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: gray;">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="33.0" prefWidth="228.0" style="-fx-background-color: white;" text="Waypoint Locations">
+                            <font>
+                                <Font name="Times New Roman Bold Italic" size="15.0" />
+                            </font>
+                        </Label>
+                        <TextField prefHeight="25.0" prefWidth="180.0" text="Name Waypoint:" />
+                        <ComboBox prefHeight="25.0" prefWidth="240.0" promptText="Waypoints" />
+                        <ListView prefHeight="283.0" prefWidth="218.0" />
+                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="204.0" spacing="10.0">
+                            <children>
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Add">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <VBox alignment="TOP_CENTER" layoutX="310.0" layoutY="47.0" prefHeight="244.0" prefWidth="191.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: grey;">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="33.0" prefWidth="202.0" style="-fx-background-color: white;" text="Points of Interest">
+                            <font>
+                                <Font name="Times New Roman Bold Italic" size="18.0" />
+                            </font>
+                        </Label>
+                        <ComboBox prefHeight="25.0" prefWidth="215.0" promptText="Points of Interst" />
+                        <ListView prefHeight="147.0" prefWidth="189.0" />
+                        <HBox alignment="CENTER" prefHeight="41.0" prefWidth="189.0" spacing="10.0">
+                            <children>
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Add">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <ComboBox layoutX="26.0" layoutY="23.0" prefHeight="49.0" prefWidth="181.0" promptText="Starting Point" />
+                <ComboBox layoutX="26.0" layoutY="97.0" prefHeight="49.0" prefWidth="181.0" promptText="Ending Point" />
+                <VBox layoutX="554.0" layoutY="47.0" prefHeight="450.0" prefWidth="218.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: gray;">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="33.0" prefWidth="228.0" style="-fx-background-color: white;" text="Avoid Locations">
+                            <font>
+                                <Font name="Times New Roman Bold Italic" size="15.0" />
+                            </font>
+                        </Label>
+                        <TextField prefHeight="25.0" prefWidth="180.0" text="Name Location:" />
+                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="204.0" spacing="10.0">
+                            <children>
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Get Location">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Add Location">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <ComboBox prefHeight="25.0" prefWidth="240.0" promptText="Location" />
+                        <ListView prefHeight="283.0" prefWidth="218.0" />
+                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="204.0" spacing="10.0">
+                            <children>
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Add">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <VBox alignment="TOP_CENTER" layoutX="310.0" layoutY="324.0" prefHeight="392.0" prefWidth="191.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: grey;">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="33.0" prefWidth="202.0" style="-fx-background-color: white;" text="DFS Routes">
+                            <font>
+                                <Font name="Times New Roman Bold Italic" size="18.0" />
+                            </font>
+                        </Label>
+                        <ListView prefHeight="316.0" prefWidth="189.0" />
+                        <Label text="Displaying 20 Routes">
+                            <font>
+                                <Font name="Times New Roman Bold Italic" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox alignment="TOP_CENTER" layoutX="554.0" layoutY="535.0" prefHeight="264.0" prefWidth="218.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: grey;">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="33.0" prefWidth="229.0" style="-fx-background-color: white;" text="Settings">
+                            <font>
+                                <Font name="Times New Roman Bold Italic" size="18.0" />
+                            </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="21.0" prefWidth="189.0" spacing="15.0">
+                            <children>
+                                <TextField prefHeight="25.0" prefWidth="40.0" text="20" />
+                                <Label prefHeight="26.0" prefWidth="87.0" text="Route Limit">
+                                    <font>
+                                        <Font name="Times New Roman Bold Italic" size="12.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <Button mnemonicParsing="false" text="Set Route Limits">
+                            <font>
+                                <Font name="Times New Roman Bold Italic" size="12.0" />
+                            </font>
+                        </Button>
+                        <Label text="Dijkstra's Algorithm" />
+                        <ComboBox prefWidth="150.0" />
+                        <Label text="Depth-First-Search" />
+                        <ComboBox prefWidth="150.0" />
+                        <Label text="Breadth-First-Search" />
+                        <ComboBox prefHeight="0.0" prefWidth="150.0" />
+                    </children>
+                </VBox>
+            </children></AnchorPane>
+    </items>
+</SplitPane>
