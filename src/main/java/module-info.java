@@ -3,6 +3,8 @@ module com.example.parisroutefinder {
     requires javafx.fxml;
 
 
-    opens com.example.parisroutefinder to javafx.fxml;
-    exports com.example.parisroutefinder;
+    opens Main to javafx.fxml;
+    exports Main;
+    exports Controllers;
+    opens Controllers to javafx.fxml;
 }
