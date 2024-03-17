@@ -1,10 +1,12 @@
 package Controllers;
 
+import Models.POI;
 import Models.Pixel;
 import Utilites.Algorithms;
 import Utilites.Graph;
 import Utilites.Utilities;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.HashSet;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.List;
 import java.io.FileInputStream;
@@ -43,9 +46,7 @@ public class ParisRouteController {
         graph();
         //System.out.println(matrix());
         Utilities.graphConnections(blackAndWhiteImage, graph);
-        getCoordinates();
-        //showlinks();
-        //test();
+        drawPath();
     }
 
     private void graph() {
@@ -85,7 +86,7 @@ public class ParisRouteController {
         }
     }*/
 
-    private int[] getCoordinates(){
+    /*private int[] getCoordinates(){
         int[] coordinates = new int[2];
         imageView.setOnMouseClicked(mouseEvent -> {
             if (blackAndWhiteImage!=null){
@@ -101,8 +102,43 @@ public class ParisRouteController {
                 }
             }
         });
+
         return coordinates;
+    }*/
+
+    private void drawPath() {
+        imageView.setOnMouseClicked(mouseEvent -> {
+            if (blackAndWhiteImage != null) {
+                if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                    // Calculate the coordinates relative to the imageView's content
+                    double x = mouseEvent.getX();
+                    double y = mouseEvent.getY();
+
+                    // Assuming imageView is directly added to the Pane and fills it completely
+                    System.out.println(x + ", " + y);
+
+                    // Example for obtaining a Pixel object and starting DFS based on mouse click
+                    Pixel clickedPixel = graph.pixelGraph[(int) y][(int) x];
+                    List<int[]> path = Algorithms.DFSAlgorithm(clickedPixel,graph.pixelGraph[322][320]);
+
+                    for (int[] coords : path) {
+                        Circle circle = new Circle();
+                        circle.setFill(Color.PINK);
+                        circle.setCenterX(coords[0]);
+                        circle.setCenterY(coords[1]);
+                        circle.setRadius(1);
+
+                        // Now, add the circle to the Pane which is the parent of imageView
+                        ((Pane) imageView.getParent()).getChildren().add(circle);
+                    }
+                }
+            }
+        });
     }
+
+
+
+
 
 
 }

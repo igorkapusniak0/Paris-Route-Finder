@@ -55,25 +55,39 @@ public class Algorithms {
 //        }
 //    }
 
-    public static List<int[]> DFSAlgorithm(Pixel startPixel) {
-        List<int[]> list = new LinkedList<>();
+    public static List<int[]> DFSAlgorithm(Pixel startPixel, Pixel endPixel) {
+        List<int[]> path = new LinkedList<>();
         Set<Pixel> visited = new HashSet<>(); // Set to keep track of visited pixels
-        dfs(startPixel, list, visited);
-        return list;
+        boolean found = dfs(startPixel, endPixel, path, visited);
+        if (!found) {
+            path.clear(); // Clear the path if the destination is not reachable
+        }
+        return path;
     }
 
-    private static void dfs(Pixel pixel, List<int[]> list, Set<Pixel> visited) {
-        if (pixel == null || visited.contains(pixel)) {
-            return; // Base case: null pixel or already visited
+    private static boolean dfs(Pixel currentPixel, Pixel endPixel, List<int[]> path, Set<Pixel> visited) {
+        if (currentPixel == null || visited.contains(currentPixel)) {
+            return false; // Base case: null pixel or already visited
         }
 
-        visited.add(pixel); // Mark the current pixel as visited
-        list.add(pixel.getCoordinates()); // Add the current pixel's coordinates
+        visited.add(currentPixel); // Mark the current pixel as visited
+        path.add(currentPixel.getCoordinates()); // Add the current pixel's coordinates
 
-        for (Pixel temp : pixel.adjList) {
-            dfs(temp, list, visited); // Recursive DFS call for unvisited adjacent pixels
+        if (currentPixel.equals(endPixel)) {
+            return true; // Destination reached
         }
+
+        for (Pixel temp : currentPixel.adjList) {
+            if (dfs(temp, endPixel, path, visited)) {
+                return true; // Destination found in a subsequent call
+            }
+        }
+
+        path.remove(path.size() - 1); // Remove the current pixel's coordinates if the destination is not found via this path
+        return false; // Continue the search
     }
+
+
 
 
 

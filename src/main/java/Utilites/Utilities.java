@@ -23,7 +23,7 @@ public class Utilities {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Color color = pixelReader.getColor(x, y);
-                if (color.equals(Color.WHITE)) {
+                if (matchesColour(color,Color.WHITE,.04)) {
                     pixelWriter.setColor(x, y, Color.WHITE);
                 } else {
                     pixelWriter.setColor(x, y, Color.BLACK);
@@ -32,6 +32,13 @@ public class Utilities {
         }
 
         return writableImage;
+    }
+    private static boolean matchesColour(Color color, Color targetColour, double tolerance) {
+        boolean redDifference = Math.abs(targetColour.getRed() - color.getRed()) <= tolerance;
+        boolean greenDifference = Math.abs(targetColour.getGreen() - color.getGreen()) <= tolerance;
+        boolean blueDifference = Math.abs(targetColour.getBlue() - color.getBlue()) <= tolerance;
+
+        return (redDifference && greenDifference && blueDifference);
     }
 
     public static void convertToPixels(Image image, Graph graph){
