@@ -1,74 +1,94 @@
 package Utilites;
 
-import java.util.Arrays;
+
+import Models.Pixel;
+import javafx.application.Platform;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
 
 public class Algorithms {
 
-//    // A utility method to find the vertex with minimum distance value,
-//    // from the set of vertices not yet included in shortest path tree
-//    private static int minDistance(int[] dist, Boolean[] sptSet, int V) {
-//        // Initialize min value and index
-//        int min = Integer.MAX_VALUE, minIndex = -1;
+
+
+//    public static void breadthFirstSearch(Graph graph, int startX, int startY, ImageView imageView) {
+//        // A set to keep track of visited nodes (pixels) using their coordinates as a unique identifier
+//        HashSet<String> visited = new HashSet<>();
 //
-//        for (int v = 0; v < V; v++)
-//            if (!sptSet[v] && dist[v] <= min) {
-//                min = dist[v];
-//                minIndex = v;
+//        // Queue to support BFS traversal
+//        Queue<Pixel<?>> queue = new ArrayDeque<>();
+//
+//        // Starting point
+//        Pixel<?> startPixel = graph.pixelGraph[startY][startX];
+//        if (startPixel == null) return; // If start pixel is null, exit
+//
+//        queue.add(startPixel);
+//        visited.add(startY + "," + startX); // Mark the starting pixel as visited
+//
+//        while (!queue.isEmpty()) {
+//            Pixel<?> currentPixel = queue.remove();
+//            //System.out.println("Visited: " + currentPixel); // Process current pixel
+//
+//            // Loop through all adjacent pixels
+//            for (Pixel<?> adjPixel : currentPixel.adjList) {
+//                int adjX = 200;
+//                int adjY = 200;
+//
+//
+//
+//                if (!visited.contains(adjY + "," + adjX)) {
+//                    queue.add(adjPixel);
+//                    visited.add(adjY + "," + adjX);
+//                }
+//                Pane pane = (Pane) imageView.getParent();
+//                Circle circle = new Circle();
+//                circle.setCenterX(adjX);
+//                circle.setCenterY(adjY);
+//                circle.setRadius(1);
+//                circle.setFill(Color.PINK);
+//                ((Pane) imageView.getParent()).getChildren().add(circle);
 //            }
-//
-//        return minIndex;
-//    }
-//
-//    // A utility method to print the constructed distance array
-//    public static void printSolution(int[] dist, int V) {
-//        System.out.println("Vertex \t\t Distance from Source");
-//        for (int i = 0; i < V; i++)
-//            System.out.println(i + " \t\t " + dist[i]);
-//    }
-//
-//    // Function that implements Dijkstra's algorithm for a graph represented
-//    // using adjacency matrix representation
-//    public static void dijkstra(int[][] graph, int src) {
-//        int V = graph.length;
-//        int[] dist = new int[V]; // The output array. dist[i] will hold
-//        // the shortest distance from src to i
-//
-//        // sptSet[i] will be true if vertex i is included in shortest
-//        // path tree or shortest distance from src to i is finalized
-//        Boolean[] sptSet = new Boolean[V];
-//
-//        // Initialize all distances as INFINITE and stpSet[] as false
-//        Arrays.fill(dist, Integer.MAX_VALUE);
-//        Arrays.fill(sptSet, false);
-//
-//        // Distance of source vertex from itself is always 0
-//        dist[src] = 0;
-//
-//        // Find shortest path for all vertices
-//        for (int count = 0; count < V - 1; count++) {
-//            // Pick the minimum distance vertex from the set of vertices
-//            // not yet processed. u is always equal to src in first iteration.
-//            int u = minDistance(dist, sptSet, V);
-//
-//            // Mark the picked vertex as processed
-//            sptSet[u] = true;
-//
-//            // Update dist value of the adjacent vertices of the picked vertex.
-//            for (int v = 0; v < V; v++)
-//
-//                // Update dist[v] only if is not in sptSet, there is an
-//                // edge from u to v, and total weight of path from src to
-//                // v through u is smaller than current value of dist[v]
-//                if (!sptSet[v] && graph[u][v] != 0 &&
-//                        dist[u] != Integer.MAX_VALUE &&
-//                        dist[u] + graph[u][v] < dist[v])
-//                    dist[v] = dist[u] + graph[u][v];
 //        }
-//
-//        // print the constructed distance array
-//        printSolution(dist, V);
-//
 //    }
+
+
+    public static <T> void breadthFirstSearch(Graph graph, int startX, int startY, ImageView imageView) {
+        HashSet<String> visited = new HashSet<>();
+        Queue<Pixel<T>> queue = new ArrayDeque<>();
+
+        Pixel<T> startPixel = graph.pixelGraph[startY][startX];
+        if (startPixel == null) return; // If the starting pixel is null, exit.
+
+        queue.add(startPixel);
+        visited.add(startPixel.getCoordinates()); // Mark the starting pixel as visited.
+
+        while (!queue.isEmpty()) {
+            Pixel<T> currentPixel = queue.remove();
+            int currentX = currentPixel.x;
+            int currentY = currentPixel.y;
+
+            // Draw a circle at the current pixel's position.
+            Platform.runLater(() -> {
+                Pane pane = (Pane) imageView.getParent();
+                Circle circle = new Circle(currentX, currentY, 1, Color.PINK);
+                pane.getChildren().add(circle);
+            });
+
+            // Visit all adjacent pixels.
+            for (Pixel<T> adjPixel : currentPixel.adjList) {
+                if (!visited.contains(adjPixel.getCoordinates())) {
+                    queue.add(adjPixel);
+                    visited.add(adjPixel.getCoordinates());
+                }
+            }
+        }
+    }
+
 
 
 

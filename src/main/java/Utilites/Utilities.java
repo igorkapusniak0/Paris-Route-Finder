@@ -40,15 +40,39 @@ public class Utilities {
         PixelReader pixelReader = image.getPixelReader();
 
         for (int y = 0; y<width;y++){
-            for (int x = 0; x<height;y++){
+            for (int x = 0; x<height;x++){
                 if(pixelReader.getColor(x,y).equals(Color.WHITE)){
-                    graph.pixelGraph[x][y] = new Pixel();
+                    graph.pixelGraph[y][x] = new Pixel(x,y);
                 }else{
-                    graph.pixelGraph[x][y] = null;
+                    graph.pixelGraph[y][x] = null;
                 }
             }
         }
     }
+
+    public static void graphConnections(Image image, Graph graph){
+        int height = (int) image.getHeight();
+        int width = (int) image.getWidth();
+
+        for (int y = 0; y<width;y++){
+            for (int x = 0; x<height;x++){
+                if(graph.pixelGraph[y][x]!=null){
+                    int down = y + 1;
+                    int right = x + 1;
+                    if (x % width < width - 1 && graph.pixelGraph[y][right]!=null ) {
+                        graph.pixelGraph[y][x].connectToNodeUndirected(graph.pixelGraph[y][right]);
+                    }
+                    if (down < height && graph.pixelGraph[down][x]!=null) {
+                        graph.pixelGraph[y][x].connectToNodeUndirected(graph.pixelGraph[down][x]);
+                    }
+                }
+            }
+        }
+
+    }
+
+
+
 
 
 }
