@@ -7,9 +7,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Algorithms {
@@ -56,8 +58,22 @@ public class Algorithms {
 //        }
 //    }
 
+    public static List<int[]> DFSAlgorithm(Pixel pixel){
+        List<int[]> list = new LinkedList<>();
+        list.add(pixel.getCoordinates());
+        for (int i = 0;i<pixel.adjList.size();i++){
+            Pixel temp = pixel.adjList.get(i);
+            list.add(temp.getCoordinates());
+            if (!temp.adjList.isEmpty()){
+                DFSAlgorithm(temp);
+            }
+        }
+        return list;
+    }
 
-    public static <T> void breadthFirstSearch(Graph graph, int startX, int startY, ImageView imageView) {
+
+
+    /*public static <T> void breadthFirstSearch(Graph graph, int startX, int startY, ImageView imageView) {
         HashSet<String> visited = new HashSet<>();
         Queue<Pixel<T>> queue = new ArrayDeque<>();
 
@@ -87,7 +103,7 @@ public class Algorithms {
                 }
             }
         }
-    }
+    }*/
 
 
 

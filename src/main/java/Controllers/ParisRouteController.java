@@ -6,14 +6,14 @@ import Utilites.Graph;
 import Utilites.Utilities;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-
+import javafx.scene.input.MouseButton;
 import java.util.ArrayList;
 import java.util.HashSet;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-
+import java.util.List;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -43,8 +43,9 @@ public class ParisRouteController {
         graph();
         //System.out.println(matrix());
         Utilities.graphConnections(blackAndWhiteImage, graph);
+        getCoordinates();
         //showlinks();
-        test();
+        //test();
     }
 
     private void graph() {
@@ -76,12 +77,31 @@ public class ParisRouteController {
         }
     }
 
-    public void test(){
+    /*public void test(){
         for (int y = 0; y<blackAndWhiteImage.getHeight();y++){
             for (int x = 0; x<blackAndWhiteImage.getWidth();x++){
                 Algorithms.breadthFirstSearch(graph,x,y,imageView);
             }
         }
+    }*/
+
+    private int[] getCoordinates(){
+        int[] coordinates = new int[2];
+        imageView.setOnMouseClicked(mouseEvent -> {
+            if (blackAndWhiteImage!=null){
+                if (mouseEvent.getButton()== MouseButton.PRIMARY){
+                    coordinates[0] = (int) mouseEvent.getX();
+                    coordinates[1] = (int) mouseEvent.getY();
+                    System.out.println(coordinates[0] + ", " + coordinates[1]);
+                    System.out.println(graph.pixelGraph[coordinates[1]][coordinates[0]]);
+                    List<int[]> list = Algorithms.DFSAlgorithm(graph.pixelGraph[coordinates[1]][coordinates[0]]);
+                    for (int[] list1: list){
+                        System.out.println(list1[0] + ", " + list1[1]);
+                    }
+                }
+            }
+        });
+        return coordinates;
     }
 
 

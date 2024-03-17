@@ -42,7 +42,7 @@ public class Utilities {
         for (int y = 0; y<width;y++){
             for (int x = 0; x<height;x++){
                 if(pixelReader.getColor(x,y).equals(Color.WHITE)){
-                    graph.pixelGraph[y][x] = new Pixel(x,y);
+                    graph.pixelGraph[y][x] = new Pixel(new int[]{x,y});
                 }else{
                     graph.pixelGraph[y][x] = null;
                 }
