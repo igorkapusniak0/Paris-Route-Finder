@@ -7,12 +7,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.util.*;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class Algorithms {
 
@@ -58,17 +55,24 @@ public class Algorithms {
 //        }
 //    }
 
-    public static List<int[]> DFSAlgorithm(Pixel pixel){
+    public static List<int[]> DFSAlgorithm(Pixel startPixel) {
         List<int[]> list = new LinkedList<>();
-        list.add(pixel.getCoordinates());
-        for (int i = 0;i<pixel.adjList.size();i++){
-            Pixel temp = pixel.adjList.get(i);
-            list.add(temp.getCoordinates());
-            if (!temp.adjList.isEmpty()){
-                DFSAlgorithm(temp);
-            }
-        }
+        Set<Pixel> visited = new HashSet<>(); // Set to keep track of visited pixels
+        dfs(startPixel, list, visited);
         return list;
+    }
+
+    private static void dfs(Pixel pixel, List<int[]> list, Set<Pixel> visited) {
+        if (pixel == null || visited.contains(pixel)) {
+            return; // Base case: null pixel or already visited
+        }
+
+        visited.add(pixel); // Mark the current pixel as visited
+        list.add(pixel.getCoordinates()); // Add the current pixel's coordinates
+
+        for (Pixel temp : pixel.adjList) {
+            dfs(temp, list, visited); // Recursive DFS call for unvisited adjacent pixels
+        }
     }
 
 
