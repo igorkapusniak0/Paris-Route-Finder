@@ -55,37 +55,70 @@ public class Algorithms {
 //        }
 //    }
 
-    public static List<int[]> DFSAlgorithm(Pixel startPixel, Pixel endPixel) {
+    public static List<int[]> BFSAlgorithm(Pixel startPixel, Pixel endPixel) {
+        Queue<Pixel> queue = new LinkedList<>();
+        Map<Pixel, Pixel> cameFrom = new HashMap<>(); // Tracks the path
+        Set<Pixel> visited = new HashSet<>();
+
+        queue.add(startPixel);
+        visited.add(startPixel);
+        cameFrom.put(startPixel, null); // Start pixel has no parent
+
+        while (!queue.isEmpty()) {
+            Pixel current = queue.remove();
+            if (current.equals(endPixel)) {
+                return reconstructPath(cameFrom, endPixel); // Found the end pixel, reconstruct and return the path
+            }
+
+            for (Pixel neighbour : current.adjList) {
+                if (!visited.contains(neighbour)) {
+                    visited.add(neighbour);
+                    queue.add(neighbour);
+                    cameFrom.put(neighbour, current); // Track the path
+                }
+            }
+        }
+        return new LinkedList<>(); // Return an empty list if no path is found
+    }
+
+    private static List<int[]> reconstructPath(Map<Pixel, Pixel> cameFrom, Pixel endPixel) {
         List<int[]> path = new LinkedList<>();
-        Set<Pixel> visited = new HashSet<>(); // Set to keep track of visited pixels
-        boolean found = dfs(startPixel, endPixel, path, visited);
-        if (!found) {
-            path.clear(); // Clear the path if the destination is not reachable
+        for (Pixel at = endPixel; at != null; at = cameFrom.get(at)) {
+            path.add(0, at.getCoordinates()); // Add to the beginning of the list
         }
         return path;
     }
 
-    private static boolean dfs(Pixel currentPixel, Pixel endPixel, List<int[]> path, Set<Pixel> visited) {
-        if (currentPixel == null || visited.contains(currentPixel)) {
-            return false; // Base case: null pixel or already visited
+    public static <T> List<List<Pixel>> findAllPathsDepthFirst(Pixel from, List<Pixel> encountered, Pixel lookingfor){
+        List<List<Pixel>> result=null, temp2;
+        if(from.equals(lookingfor)) { //Found it
+            List<Pixel> temp=new ArrayList<>(); //Create new single solution path list
+            temp.add(from); //Add current node to the new single path list
+            result=new ArrayList<>(); //Create new "list of lists" to store path permutations
+            result.add(temp); //Add the new single path list to the path permutations list
+            return result; //Return the path permutations list
         }
-
-        visited.add(currentPixel); // Mark the current pixel as visited
-        path.add(currentPixel.getCoordinates()); // Add the current pixel's coordinates
-
-        if (currentPixel.equals(endPixel)) {
-            return true; // Destination reached
-        }
-
-        for (Pixel temp : currentPixel.adjList) {
-            if (dfs(temp, endPixel, path, visited)) {
-                return true; // Destination found in a subsequent call
+        if(encountered==null) encountered=new ArrayList<>(); //First node so create new (empty) encountered list
+        encountered.add(from); //Add current node to encountered list
+        for(Pixel adjNode : from.adjList){
+            if(!encountered.contains(adjNode)) {
+                temp2=findAllPathsDepthFirst(adjNode,new ArrayList<>(encountered),lookingfor); //Use clone of encountered list
+//for recursive call!
+                if(temp2!=null) { //Result of the recursive call contains one or more paths to the solution node
+                    for(List<Pixel> x : temp2) //For each partial path list returned
+                        x.add(0,from); //Add the current node to the front of each path list
+                    if(result==null) result=temp2; //If this is the first set of solution paths found use it as the result
+                    else result.addAll(temp2); //Otherwise append them to the previously found paths
+                }
             }
         }
-
-        path.remove(path.size() - 1); // Remove the current pixel's coordinates if the destination is not found via this path
-        return false; // Continue the search
+        return result;
     }
+
+
+
+
+
 
 
 

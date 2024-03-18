@@ -119,11 +119,11 @@ public class ParisRouteController {
 
                     // Example for obtaining a Pixel object and starting DFS based on mouse click
                     Pixel clickedPixel = graph.pixelGraph[(int) y][(int) x];
-                    List<int[]> path = Algorithms.DFSAlgorithm(clickedPixel,graph.pixelGraph[322][320]);
+                    List<int[]> path = Algorithms.BFSAlgorithm(clickedPixel,graph.pixelGraph[554][55]);
 
                     for (int[] coords : path) {
                         Circle circle = new Circle();
-                        circle.setFill(Color.PINK);
+                        circle.setFill(Color.GREEN);
                         circle.setCenterX(coords[0]);
                         circle.setCenterY(coords[1]);
                         circle.setRadius(1);
