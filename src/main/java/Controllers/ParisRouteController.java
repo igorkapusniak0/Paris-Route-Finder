@@ -5,8 +5,12 @@ import Models.Pixel;
 import Utilites.Algorithms;
 import Utilites.Graph;
 import Utilites.Utilities;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import java.util.ArrayList;
@@ -16,6 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+
 import java.util.List;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,19 +40,45 @@ public class ParisRouteController {
     private final Image parisMap = new Image(input);
     @FXML
     public ImageView imageView;
+    private int[] startPoint = new int[2];
+    private int[] endPoint = new int[2];
 
     private Image blackAndWhiteImage = null;
     private Graph graph = new Graph();
 
 
+    @FXML
+    public ComboBox<String> algorithmsCombo;
+
+
     public void initialize() {
+        setAlgorithmsCombo();
         imageView.setImage(parisMap);
         blackAndWhiteImage = Utilities.convertToBlackAndWhite(parisMap);
         imageView.setImage(blackAndWhiteImage);
         graph();
         //System.out.println(matrix());
         Utilities.graphConnections(blackAndWhiteImage, graph);
-        drawPath();
+        //drawPath();
+
+
+
+    }
+    private void setAlgorithmsCombo(){
+        algorithmsCombo.getItems().addAll(
+                "Depth First Search",
+                "Breadth First Search",
+                "Dijkstra's Algorithm");
+    }
+
+    @FXML
+    public void setStartPoint(){
+        startPoint = getCoordinates();
+
+    }
+    @FXML
+    public void setEndPoint(){
+        endPoint = getCoordinates();
     }
 
     private void graph() {
@@ -86,7 +118,7 @@ public class ParisRouteController {
         }
     }*/
 
-    /*private int[] getCoordinates(){
+    private int[] getCoordinates(){
         int[] coordinates = new int[2];
         imageView.setOnMouseClicked(mouseEvent -> {
             if (blackAndWhiteImage!=null){
@@ -94,17 +126,49 @@ public class ParisRouteController {
                     coordinates[0] = (int) mouseEvent.getX();
                     coordinates[1] = (int) mouseEvent.getY();
                     System.out.println(coordinates[0] + ", " + coordinates[1]);
-                    System.out.println(graph.pixelGraph[coordinates[1]][coordinates[0]]);
-                    List<int[]> list = Algorithms.DFSAlgorithm(graph.pixelGraph[coordinates[1]][coordinates[0]]);
-                    for (int[] list1: list){
-                        System.out.println(list1[0] + ", " + list1[1]);
-                    }
+                    Circle circle = new Circle();
+                    circle.setFill(Color.RED);
+                    circle.setCenterX(coordinates[0]);
+                    circle.setCenterY(coordinates[1]);
+                    circle.setRadius(3);
+                    ((Pane) imageView.getParent()).getChildren().add(circle);
                 }
             }
         });
-
         return coordinates;
-    }*/
+    }
+
+
+    @FXML
+    private void calculatePath(){
+        Pixel startPixel = graph.pixelGraph[startPoint[1]][startPoint[0]];
+        Pixel endPixel = graph.pixelGraph[endPoint[1]][endPoint[0]];
+        System.out.println(startPixel + ", " + endPixel);
+        List<int[]> path = null;
+        String selectedAlgorithm = algorithmsCombo.getValue();
+        if ("Depth First Search".equals(selectedAlgorithm)){
+            path = Algorithms.findPathDepthFirst(startPixel,endPixel);
+        }
+        if ("Breadth First Search".equals(selectedAlgorithm)){
+            path = Algorithms.BFSAlgorithm(startPixel,endPixel);
+
+        }
+        if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
+            path = Algorithms.BFSAlgorithm(startPixel,endPixel);
+
+        }
+
+        for (int[] coords : path) {
+            Circle circle = new Circle();
+            circle.setFill(Color.GREEN);
+            circle.setCenterX(coords[0]);
+            circle.setCenterY(coords[1]);
+            circle.setRadius(1);
+            ((Pane) imageView.getParent()).getChildren().add(circle);
+        }
+    }
+
+
 
     private void drawPath() {
         imageView.setOnMouseClicked(mouseEvent -> {
@@ -134,6 +198,12 @@ public class ParisRouteController {
                 }
             }
         });
+    }
+
+    @FXML
+    public void clearMap(){
+        Pane pane = (Pane) imageView.getParent();
+        pane.getChildren().removeIf(node -> node instanceof Circle);
     }
 
 

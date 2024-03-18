@@ -66,11 +66,12 @@ public class Utilities {
                 if(graph.pixelGraph[y][x]!=null){
                     int down = y + 1;
                     int right = x + 1;
-                    if (x % width < width - 1 && graph.pixelGraph[y][right]!=null ) {
-                        graph.pixelGraph[y][x].connectToNodeUndirected(graph.pixelGraph[y][right]);
-                    }
+
                     if (down < height && graph.pixelGraph[down][x]!=null) {
                         graph.pixelGraph[y][x].connectToNodeUndirected(graph.pixelGraph[down][x]);
+                    }
+                    if (right % width < width - 1 && graph.pixelGraph[y][right]!=null ) {
+                        graph.pixelGraph[y][x].connectToNodeUndirected(graph.pixelGraph[y][right]);
                     }
                 }
             }

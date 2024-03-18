@@ -7,25 +7,12 @@ public class Pixel {
 
     public ArrayList<Pixel> adjList = new ArrayList<>();
 
-    public int x,y;
-    public void connectToNodeDirected(Pixel destNode) {
-        adjList.add(destNode);
-    }
-//    public void connectToNodeUndirected(Pixel<T> destNode) {
-//        adjList.add(destNode);
-//        destNode.adjList.add(this);
-
-//    public String links(){
-//        return adjList.toString();
-//    }
 
     public Pixel(int[] coordinates) {
         setCoordinates(coordinates);
     }
 
-//    public void connectToNodeDirected(Pixel<T> destNode) {
-//        adjList.add(destNode);
-//    }
+
 
     public void connectToNodeUndirected(Pixel destNode) {
         adjList.add(destNode);
@@ -35,7 +22,7 @@ public class Pixel {
     public String links() {
         StringBuilder links = new StringBuilder("[");
         for (Pixel pixel : adjList) {
-            links.append(String.format(" (%d, %d)", pixel.x, pixel.y));
+            links.append(String.format(" (%d, %d)", coordinates[0], coordinates[1]));
         }
         links.append(" ]");
         return links.toString();
@@ -48,6 +35,7 @@ public class Pixel {
     public int[] getCoordinates(){
         return coordinates;
     }
+
 
     @Override
     public String toString() {

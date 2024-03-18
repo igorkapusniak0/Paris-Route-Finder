@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.layout.Pane?>
-<SplitPane dividerPositions="0.45" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ParisRouteController">
+<SplitPane dividerPositions="0.45" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ParisRouteController">
     <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #CEEBED;">
             <children>
@@ -42,7 +32,7 @@
                 <Pane layoutX="12.0" layoutY="96.0" prefHeight="635.0" prefWidth="635.0" style="-fx-border-width: 5; -fx-border-color: Black;">
                         <ImageView fx:id="imageView" fitHeight="630.0" fitWidth="630.0" pickOnBounds="true" preserveRatio="true" />
                 </Pane>
-                <Button layoutX="289.0" layoutY="752.0" mnemonicParsing="false" text="Clear Map">
+                <Button layoutX="289.0" layoutY="752.0" mnemonicParsing="false" text="Clear Map" onAction="#clearMap">
                     <font>
                         <Font name="Times New Roman Bold Italic" size="15.0" />
                     </font>
@@ -88,12 +78,12 @@
                         </LinearGradient>
                     </fill>
                 </Rectangle>
-                <Button layoutX="41.0" layoutY="751.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="159.0" text="Calculate Route">
+                <Button layoutX="41.0" layoutY="751.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="159.0" text="Calculate Route" onAction="#calculatePath">
                     <font>
                         <Font name="Times New Roman Bold Italic" size="15.0" />
                     </font>
                 </Button>
-                <ComboBox layoutX="42.0" layoutY="676.0" prefHeight="49.0" prefWidth="181.0" promptText="Algorithms" />
+                <ComboBox fx:id="algorithmsCombo" layoutX="42.0" layoutY="676.0" prefHeight="49.0" prefWidth="181.0" promptText="Algorithms" />
                 <VBox layoutX="26.0" layoutY="206.0" prefHeight="417.0" prefWidth="218.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: gray;">
                     <children>
                         <Label alignment="CENTER" prefHeight="33.0" prefWidth="228.0" style="-fx-background-color: white;" text="Waypoint Locations">
@@ -232,6 +222,8 @@
                         <ComboBox prefHeight="0.0" prefWidth="150.0" />
                     </children>
                 </VBox>
+            <Button layoutX="41.0" layoutY="72.0" mnemonicParsing="false" text="Start" onAction="#setStartPoint"/>
+            <Button layoutX="41.0" layoutY="146.0" mnemonicParsing="false" text="End" onAction="#setEndPoint"/>
             </children></AnchorPane>
     </items>
 </SplitPane>
