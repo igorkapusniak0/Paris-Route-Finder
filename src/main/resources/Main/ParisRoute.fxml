@@ -30,9 +30,12 @@
                     </fill>
                 </Rectangle>
                 <Pane layoutX="12.0" layoutY="96.0" prefHeight="635.0" prefWidth="635.0" style="-fx-border-width: 5; -fx-border-color: Black;">
-                        <ImageView fx:id="imageView" fitHeight="630.0" fitWidth="630.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imageView" fitHeight="630.0" fitWidth="630.0" layoutX="3.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../Image/full-image630.png" />
+                  </image></ImageView>
                 </Pane>
-                <Button layoutX="289.0" layoutY="752.0" mnemonicParsing="false" text="Clear Map" onAction="#clearMap">
+                <Button layoutX="289.0" layoutY="752.0" mnemonicParsing="false" onAction="#clearMap" text="Clear Map">
                     <font>
                         <Font name="Times New Roman Bold Italic" size="15.0" />
                     </font>
@@ -42,7 +45,7 @@
                         <Font name="Times New Roman Bold Italic" size="15.0" />
                     </font>
                 </Button>
-                <Button layoutX="193.0" layoutY="780.0" mnemonicParsing="false" text="Clear Route" onAction="#clearPath">
+                <Button layoutX="193.0" layoutY="780.0" mnemonicParsing="false" onAction="#clearPath" text="Clear Route">
                     <font>
                         <Font name="Times New Roman Bold Italic" size="15.0" />
                     </font>
@@ -78,7 +81,7 @@
                         </LinearGradient>
                     </fill>
                 </Rectangle>
-                <Button layoutX="41.0" layoutY="751.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="159.0" text="Calculate Route" onAction="#calculatePath">
+                <Button layoutX="41.0" layoutY="751.0" mnemonicParsing="false" onAction="#calculatePath" prefHeight="35.0" prefWidth="159.0" text="Calculate Route">
                     <font>
                         <Font name="Times New Roman Bold Italic" size="15.0" />
                     </font>
@@ -222,8 +225,8 @@
                         <ComboBox prefHeight="0.0" prefWidth="150.0" />
                     </children>
                 </VBox>
-            <Button layoutX="41.0" layoutY="72.0" mnemonicParsing="false" text="Start" onAction="#setStartPoint"/>
-            <Button layoutX="41.0" layoutY="146.0" mnemonicParsing="false" text="End" onAction="#setEndPoint"/>
+            <Button layoutX="41.0" layoutY="72.0" mnemonicParsing="false" onAction="#setStartPoint" text="Start" />
+            <Button layoutX="41.0" layoutY="146.0" mnemonicParsing="false" onAction="#setEndPoint" text="End" />
             </children></AnchorPane>
     </items>
 </SplitPane>

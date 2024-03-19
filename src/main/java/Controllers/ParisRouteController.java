@@ -27,19 +27,19 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class ParisRouteController {
-    FileInputStream input;
+    /*FileInputStream input;
 
     {
         try {
-            input = new FileInputStream("src/main/resources/Image/Paris.png");
+            input = new FileInputStream("src/main/resources/Image/full-imagex3.png");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    private final Image parisMap = new Image(input);
     @FXML
     public ImageView imageView;
+    private Image parisMap;
     private int[] startPoint = new int[2];
     private int[] endPoint = new int[2];
 
@@ -52,10 +52,11 @@ public class ParisRouteController {
 
 
     public void initialize() {
+        parisMap = imageView.getImage();
         setAlgorithmsCombo();
-        imageView.setImage(parisMap);
+        //imageView.setImage(parisMap);
         blackAndWhiteImage = Utilities.convertToBlackAndWhite(parisMap);
-        imageView.setImage(blackAndWhiteImage);
+        //imageView.setImage(blackAndWhiteImage);
         graph();
         //System.out.println(matrix());
         Utilities.graphConnections(blackAndWhiteImage, graph);

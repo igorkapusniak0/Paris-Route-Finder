@@ -70,13 +70,12 @@ public class Utilities {
                     if (down < height && graph.pixelGraph[down][x]!=null) {
                         graph.pixelGraph[y][x].connectToNodeUndirected(graph.pixelGraph[down][x]);
                     }
-                    if (right % width < width - 1 && graph.pixelGraph[y][right]!=null ) {
+                    if (right < width && graph.pixelGraph[y][right]!=null ) {
                         graph.pixelGraph[y][x].connectToNodeUndirected(graph.pixelGraph[y][right]);
                     }
                 }
             }
         }
-
     }
 
 
