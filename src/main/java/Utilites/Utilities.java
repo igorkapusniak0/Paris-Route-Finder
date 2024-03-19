@@ -7,6 +7,10 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.image.*;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.LinkedList;
 
 public class Utilities {
@@ -77,6 +81,19 @@ public class Utilities {
             }
         }
     }
+
+    /*public static void readInDatabase(){
+        System line = "";
+        try {
+            File database = new File("src/main/resources/Data/POI.csv");
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(database));
+            while (line = bufferedReader.readLine())
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+
+
 
 
 
