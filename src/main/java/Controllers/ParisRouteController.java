@@ -117,6 +117,14 @@ public class ParisRouteController {
             }
         }
     }*/
+    private void drawEdgeCircle(int[] coords){
+        Circle circle = new Circle();
+        circle.setFill(Color.RED);
+        circle.setCenterX(coords[0]);
+        circle.setCenterY(coords[1]);
+        circle.setRadius(3);
+        ((Pane) imageView.getParent()).getChildren().add(circle);
+    }
 
     private int[] getCoordinates(){
         int[] coordinates = new int[2];
@@ -131,6 +139,7 @@ public class ParisRouteController {
                     circle.setCenterX(coordinates[0]);
                     circle.setCenterY(coordinates[1]);
                     circle.setRadius(3);
+                    circle.setUserData("EdgeCircle");
                     ((Pane) imageView.getParent()).getChildren().add(circle);
                 }
             }
@@ -164,13 +173,14 @@ public class ParisRouteController {
             circle.setCenterX(coords[0]);
             circle.setCenterY(coords[1]);
             circle.setRadius(1);
+            circle.setUserData("pathCircle");
             ((Pane) imageView.getParent()).getChildren().add(circle);
         }
     }
 
 
 
-    private void drawPath() {
+    /*private void drawPath() {
         imageView.setOnMouseClicked(mouseEvent -> {
             if (blackAndWhiteImage != null) {
                 if (mouseEvent.getButton() == MouseButton.PRIMARY) {
@@ -198,12 +208,18 @@ public class ParisRouteController {
                 }
             }
         });
-    }
+    }*/
 
     @FXML
     public void clearMap(){
         Pane pane = (Pane) imageView.getParent();
         pane.getChildren().removeIf(node -> node instanceof Circle);
+    }
+
+    @FXML
+    public void clearPath(){
+        Pane pane = (Pane) imageView.getParent();
+        pane.getChildren().removeIf(node -> "pathCircle".equals(node.getUserData()));
     }
 
 

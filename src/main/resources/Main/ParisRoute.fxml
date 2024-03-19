@@ -42,7 +42,7 @@
                         <Font name="Times New Roman Bold Italic" size="15.0" />
                     </font>
                 </Button>
-                <Button layoutX="193.0" layoutY="780.0" mnemonicParsing="false" text="Clear Route">
+                <Button layoutX="193.0" layoutY="780.0" mnemonicParsing="false" text="Clear Route" onAction="#clearPath">
                     <font>
                         <Font name="Times New Roman Bold Italic" size="15.0" />
                     </font>
