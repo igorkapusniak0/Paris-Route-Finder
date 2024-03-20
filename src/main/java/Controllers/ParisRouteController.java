@@ -29,6 +29,8 @@ import java.io.FileNotFoundException;
 public class ParisRouteController {
     @FXML
     public ImageView imageView;
+    @FXML
+    public ImageView iconImageView;
     private Image parisMap;
     private int[] startPoint = new int[2];
     private int[] endPoint = new int[2];
@@ -110,7 +112,7 @@ public class ParisRouteController {
 
     private int[] getCoordinates(){
         int[] coordinates = new int[2];
-        imageView.setOnMouseClicked(mouseEvent -> {
+        iconImageView.setOnMouseClicked(mouseEvent -> {
             if (blackAndWhiteImage!=null){
                 if (mouseEvent.getButton()== MouseButton.PRIMARY){
                     coordinates[0] = (int) mouseEvent.getX();
@@ -118,8 +120,8 @@ public class ParisRouteController {
                     System.out.println(coordinates[0] + ", " + coordinates[1]);
                     Circle circle = new Circle();
                     circle.setFill(Color.RED);
-                    circle.setCenterX(coordinates[0]);
-                    circle.setCenterY(coordinates[1]);
+                    circle.setCenterX(coordinates[0]+3);
+                    circle.setCenterY(coordinates[1]+3);
                     circle.setRadius(3);
                     circle.setUserData("EdgeCircle");
                     ((Pane) imageView.getParent()).getChildren().add(circle);
@@ -151,8 +153,8 @@ public class ParisRouteController {
         for (int[] coords : path) {
             Circle circle = new Circle();
             circle.setFill(Color.GREEN);
-            circle.setCenterX(coords[0]);
-            circle.setCenterY(coords[1]);
+            circle.setCenterX(coords[0]+1);
+            circle.setCenterY(coords[1]+1);
             circle.setRadius(1);
             circle.setUserData("pathCircle");
             ((Pane) imageView.getParent()).getChildren().add(circle);
