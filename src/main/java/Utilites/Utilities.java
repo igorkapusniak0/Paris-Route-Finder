@@ -112,10 +112,10 @@ public class Utilities {
                     int y2 = poi2.getY();
                     int xDiff = Math.abs(x2-x1);
                     int yDiff = Math.abs(y2-y1);
-                    double distance = Math.sqrt((xDiff^2)+(yDiff^2));
-                    if (xDiff<=50 && yDiff<=50){
+                    double distance = Math.sqrt((Math.pow(xDiff,2))+(Math.pow(yDiff,2)));
+                    if (distance<=50){
                         hashMap.put(distance, poi2);
-                    } else if ((hashMap.size()<=2) && (xDiff<200 && yDiff<200)) {
+                    } else if ((hashMap.size()<=2) && (distance<=200)) {
                         hashMap.put(distance,poi2);
                     }
                 }
