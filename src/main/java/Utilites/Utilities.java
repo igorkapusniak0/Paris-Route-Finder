@@ -1,16 +1,17 @@
 package Utilites;
 
+import Models.POI;
 import Models.Pixel;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.image.*;
+import java.util.ArrayList;
+import java.math.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Utilities {
@@ -82,16 +83,48 @@ public class Utilities {
         }
     }
 
-    /*public static void readInDatabase(){
-        System line = "";
+    public static ArrayList<POI> readInDatabase(){
+        String line = "";
+        ArrayList<POI> POIs = new ArrayList<>();
         try {
             File database = new File("src/main/resources/Data/POI.csv");
             BufferedReader bufferedReader = new BufferedReader(new FileReader(database));
-            while (line = bufferedReader.readLine())
-        } catch (FileNotFoundException e) {
+            while ((line = bufferedReader.readLine())!=null){
+                String[] values = line.split(",");
+                POI poi = new POI(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()),null);
+                POIs.add(poi);
+            }
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }*/
+        return POIs;
+    }
+
+    public static ArrayList<POI> poiLinks(ArrayList<POI> POIs){
+        ArrayList<POI> arrayList = new ArrayList<>();
+        for(POI poi : POIs){
+            HashMap<Double,POI> hashMap = new HashMap<>();
+            for (POI poi2 : POIs) {
+                if (poi!=poi2){
+                    int x1 = poi.getX();
+                    int y1 = poi.getY();
+                    int x2 = poi2.getX();
+                    int y2 = poi2.getY();
+                    int xDiff = Math.abs(x2-x1);
+                    int yDiff = Math.abs(y2-y1);
+                    double distance = Math.sqrt((xDiff^2)+(yDiff^2));
+                    if (xDiff<=50 && yDiff<=50){
+                        hashMap.put(distance, poi2);
+                    } else if ((hashMap.size()<=2) && (xDiff<200 && yDiff<200)) {
+                        hashMap.put(distance,poi2);
+                    }
+                }
+            }
+            poi.setPOIs(hashMap);
+            arrayList.add(poi);
+        }
+        return arrayList;
+    }
 
 
 

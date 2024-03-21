@@ -13,8 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
-import java.util.ArrayList;
-import java.util.HashSet;
+
+import java.util.*;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -22,7 +23,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-import java.util.List;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -45,6 +45,7 @@ public class ParisRouteController {
     public void initialize() {
         parisMap = imageView.getImage();
         setAlgorithmsCombo();
+        POILinks();
         //imageView.setImage(parisMap);
         blackAndWhiteImage = Utilities.convertToBlackAndWhite(parisMap);
         //imageView.setImage(blackAndWhiteImage);
@@ -52,6 +53,7 @@ public class ParisRouteController {
         //System.out.println(matrix());
         Utilities.graphConnections(blackAndWhiteImage, graph);
         //drawPath();
+        test();
 
 
 
@@ -170,6 +172,28 @@ public class ParisRouteController {
     public void clearPath(){
         Pane pane = (Pane) imageView.getParent();
         pane.getChildren().removeIf(node -> "pathCircle".equals(node.getUserData()));
+    }
+
+    private ArrayList<POI> getPOIs(){
+        ArrayList<POI> POIs = Utilities.readInDatabase();
+        return POIs;
+    }
+
+    private ArrayList<POI> POILinks(){
+        ArrayList<POI> poiArrayList = Utilities.poiLinks(getPOIs());
+        return poiArrayList;
+    }
+    private void test(){
+        ArrayList<POI> list = POILinks();
+        for (POI poi : list){
+            System.out.println(poi.getName());
+            HashMap<Double, POI> linkedPOIs = poi.getPOIs();
+
+            for (Map.Entry<Double, POI> entry : linkedPOIs.entrySet()) {
+                POI linkedPOI = entry.getValue();
+                System.out.println(" POI: " + linkedPOI.getName());
+            }
+        }
     }
 
 
