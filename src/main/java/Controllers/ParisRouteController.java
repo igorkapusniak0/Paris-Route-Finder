@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 import java.io.FileInputStream;
@@ -188,12 +189,20 @@ public class ParisRouteController {
         for (POI poi : list){
             System.out.println(poi.getName());
             HashMap<Double, POI> linkedPOIs = poi.getPOIs();
+            Label name = new Label(poi.getName());
+            int radius = 4;
+            name.setLayoutX(poi.getX()-radius*3);
+            name.setLayoutY(poi.getY()+radius*2);
+            Circle circle = new Circle(poi.getX()+radius,poi.getY()+radius,4,Color.GREEN);
             Pane pane = (Pane) imageView.getParent();
-            pane.getChildren().add(new Circle(poi.getX()+4,poi.getY()+4,4,Color.GREEN));
+            pane.getChildren().addAll(circle,name);
 
             for (Map.Entry<Double, POI> entry : linkedPOIs.entrySet()) {
                 POI linkedPOI = entry.getValue();
                 System.out.println(" POI: " + linkedPOI.getName() + " Distance: " + entry.getKey());
+                Line line = new Line(linkedPOI.getX()+radius,linkedPOI.getY()+radius,poi.getX()+radius,poi.getY()+radius);
+                line.setFill(Color.RED);
+                pane.getChildren().add(line);
             }
         }
     }

@@ -115,7 +115,7 @@ public class Utilities {
                     double distance = Math.sqrt((Math.pow(xDiff,2))+(Math.pow(yDiff,2)));
                     if (distance<=50){
                         hashMap.put(distance, poi2);
-                    } else if ((hashMap.size()<=2) && (distance<=200)) {
+                    } else if ((hashMap.size()<=2) && (distance>=150) && (distance<=200)) {
                         hashMap.put(distance,poi2);
                     }
                 }
