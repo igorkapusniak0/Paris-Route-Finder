@@ -9,9 +9,9 @@ public class POI {
     private String name;
     private int x;
     private int y;
-    private HashMap<Double, POI> POIs;
+    private HashMap<Double, POI> POIs = new HashMap<>();
 
-     public POI(String name, int x , int y,HashMap<Double,POI>POIs){
+     public POI(String name, int x , int y){
         setName(name);
         setX(x);
         setY(y);
