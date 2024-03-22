@@ -91,7 +91,7 @@ public class Utilities {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(database));
             while ((line = bufferedReader.readLine())!=null){
                 String[] values = line.split(",");
-                POI poi = new POI(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()),null);
+                POI poi = new POI(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()));
                 POIs.add(poi);
             }
         } catch (IOException e) {
@@ -103,7 +103,6 @@ public class Utilities {
     public static ArrayList<POI> poiLinks(ArrayList<POI> POIs){
         ArrayList<POI> arrayList = new ArrayList<>();
         for(POI poi : POIs){
-            HashMap<Double,POI> hashMap = new HashMap<>();
             for (POI poi2 : POIs) {
                 if (poi!=poi2){
                     int x1 = poi.getX();
@@ -113,23 +112,19 @@ public class Utilities {
                     int xDiff = Math.abs(x2-x1);
                     int yDiff = Math.abs(y2-y1);
                     double distance = Math.sqrt((Math.pow(xDiff,2))+(Math.pow(yDiff,2)));
-                    if (distance<=50){
-                        hashMap.put(distance, poi2);
-                    } else if ((hashMap.size()<=2) && (distance>=150) && (distance<=200)) {
-                        hashMap.put(distance,poi2);
+                    if (poi2.getPOIs()!=null ){
+                        if (distance<=50){
+                            poi.getPOIs().put(distance, poi2);
+                            poi2.getPOIs().put(distance,poi);
+                        } else if (poi.getPOIs().size()<=3 && distance<=200 && poi2.getPOIs().size()<=3) {
+                            poi.getPOIs().put(distance, poi2);
+                            poi2.getPOIs().put(distance,poi);
+                        }
                     }
                 }
             }
-            poi.setPOIs(hashMap);
             arrayList.add(poi);
         }
         return arrayList;
     }
-
-
-
-
-
-
-
 }

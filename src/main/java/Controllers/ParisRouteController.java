@@ -189,13 +189,10 @@ public class ParisRouteController {
         for (POI poi : list){
             System.out.println(poi.getName());
             HashMap<Double, POI> linkedPOIs = poi.getPOIs();
-            Label name = new Label(poi.getName());
-            int radius = 4;
-            name.setLayoutX(poi.getX()-radius*3);
-            name.setLayoutY(poi.getY()+radius*2);
-            Circle circle = new Circle(poi.getX()+radius,poi.getY()+radius,4,Color.GREEN);
             Pane pane = (Pane) imageView.getParent();
-            pane.getChildren().addAll(circle,name);
+            int radius = 4;
+            Circle circle = new Circle(poi.getX()+radius,poi.getY()+radius,radius,Color.GREEN);
+            pane.getChildren().add(circle);
 
             for (Map.Entry<Double, POI> entry : linkedPOIs.entrySet()) {
                 POI linkedPOI = entry.getValue();
