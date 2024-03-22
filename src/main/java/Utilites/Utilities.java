@@ -113,7 +113,10 @@ public class Utilities {
                     int yDiff = Math.abs(y2-y1);
                     double distance = Math.sqrt((Math.pow(xDiff,2))+(Math.pow(yDiff,2)));
                     if (poi2.getPOIs()!=null ){
-                        if (poi.getPOIs().size()<=2 && distance<=200 && poi2.getPOIs().size()<=2){
+                        if (distance<=50){
+                            poi.getPOIs().put(distance, poi2);
+                            poi2.getPOIs().put(distance,poi);
+                        } else if (poi.getPOIs().size()<=3 && distance<=200 && poi2.getPOIs().size()<=3) {
                             poi.getPOIs().put(distance, poi2);
                             poi2.getPOIs().put(distance,poi);
                         }
