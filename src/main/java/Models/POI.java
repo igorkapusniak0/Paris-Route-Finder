@@ -43,8 +43,5 @@ public class POI {
          return POIs;
     }
 
-    @Override
-    public String toString(){
-         return getName();
-    }
+
 }
