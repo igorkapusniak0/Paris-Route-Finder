@@ -55,7 +55,7 @@ public class ParisRouteController {
         Utilities.graphConnections(blackAndWhiteImage, graph);
         //drawPath();
         test();
-
+//null
 
 
     }
