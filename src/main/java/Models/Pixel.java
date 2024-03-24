@@ -13,7 +13,7 @@ public class Pixel {
     }
 
 
-
+//null
     public void connectToNodeUndirected(Pixel destNode) {
         adjList.add(destNode);
         destNode.adjList.add(this);
