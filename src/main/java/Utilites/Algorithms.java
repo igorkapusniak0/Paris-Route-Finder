@@ -1,21 +1,15 @@
 package Utilites;
 
 
-import Models.GraphNode;
+import Models.POI;
 import Models.Pixel;
-import javafx.application.Platform;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 import java.util.*;
 import java.util.LinkedList;
-import java.util.function.Function;
 
 public class Algorithms {
 
-    public static List<int[]> findPathDepthFirst(Pixel start, Pixel target) {
+    public static List<int[]> DFSAlgorithm(Pixel start, Pixel target) {
         Stack<Pixel> stack = new Stack<>();
         Map<Pixel, Pixel> cameFrom = new HashMap<>(); // To reconstruct the path later
         Set<Pixel> visited = new HashSet<>();
@@ -81,35 +75,70 @@ public class Algorithms {
         }
         return new LinkedList<>();
     }
-//    public static <T extends GraphNode<T>> List<T> BFSAlgorithm2(T startNode, T endNode) {
-//        Queue<T> queue = new LinkedList<>();
-//        Map<T, T> cameFrom = new HashMap<>();
-//        Set<T> visited = new HashSet<>();
-//
-//        queue.add(startNode);
-//        visited.add(startNode);
-//        cameFrom.put(startNode, null);
-//
-//        while (!queue.isEmpty()) {
-//            T current = queue.remove();
-//            if (current.equals(endNode)) {
-//                List<T> path = new LinkedList<>();
-//                for (T at = endNode; at != null; at = cameFrom.get(at)) {
-//                    path.add(0, at);
-//                }
-//                return path;
-//            }
-//
-//            for (T neighbour : current.getNeighbours()) {
-//                if (!visited.contains(neighbour)) {
-//                    visited.add(neighbour);
-//                    queue.add(neighbour);
-//                    cameFrom.put(neighbour, current);
-//                }
-//            }
-//        }
-//        return new LinkedList<>();
-//    }
+    public static List<POI> BFSAlgorithm2(POI startNode, POI endNode) {
+        Queue<POI> queue = new LinkedList<>();
+        Map<POI, POI> cameFrom = new HashMap<>();
+        Set<POI> visited = new HashSet<>();
+
+        queue.add(startNode);
+        visited.add(startNode);
+        cameFrom.put(startNode, null);
+
+        while (!queue.isEmpty()) {
+            POI current = queue.remove();
+            if (current.equals(endNode)) {
+                List<POI> path = new LinkedList<>();
+                for (POI at = endNode; at != null; at = cameFrom.get(at)) {
+                    path.add(0, at);
+                }
+                return path;
+            }
+
+            for (Map.Entry<Double, POI> neighbour : current.getPOIs().entrySet()) {
+                if (!visited.contains(neighbour)) {
+                    visited.add(neighbour.getValue());
+                    queue.add(neighbour.getValue());
+                    cameFrom.put(neighbour.getValue(), current);
+                }
+            }
+        }
+        return new LinkedList<>();
+    }
+    public static List<POI> DFSAlgorithm2(POI start, POI target) {
+        Stack<POI> stack = new Stack<>();
+        Map<POI, POI> cameFrom = new HashMap<>(); // To reconstruct the path later
+        Set<POI> visited = new HashSet<>();
+
+        // Start by pushing the start node onto the stack
+        stack.push(start);
+
+        while (!stack.isEmpty()) {
+            POI current = stack.pop();
+
+            // If the target is found, reconstruct the path from start to target
+            if (current.equals(target)) {
+                List<POI> path = new ArrayList<>();
+                for (POI at = target; at != null; at = cameFrom.get(at)) {
+                    path.add(at);
+                }
+                return path;
+            }
+
+            // If current node has not been visited, visit it
+            if (!visited.contains(current)) {
+                visited.add(current);
+
+                // Explore neighbours
+                for (Map.Entry<Double, POI> neighbour : current.getPOIs().entrySet()) {
+                    if (!visited.contains(neighbour) && !stack.contains(neighbour)) {
+                        stack.push(neighbour.getValue());
+                        cameFrom.put(neighbour.getValue(), current); // Remember where we came from
+                    }
+                }
+            }
+        }
+        return null; // Return null if no path is found
+    }
 
 
 
