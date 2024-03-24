@@ -136,7 +136,7 @@
                                 <Font name="Times New Roman Bold Italic" size="18.0" />
                             </font>
                         </Label>
-                        <ComboBox prefHeight="25.0" prefWidth="215.0" promptText="Points of Interst" />
+                        <ComboBox fx:id="PoiCombo" prefHeight="25.0" prefWidth="215.0" promptText="Points of Interst" />
                         <ListView prefHeight="147.0" prefWidth="189.0" />
                         <HBox alignment="CENTER" prefHeight="41.0" prefWidth="189.0" spacing="10.0">
                             <children>
@@ -154,8 +154,8 @@
                         </HBox>
                     </children>
                 </VBox>
-                <ComboBox layoutX="26.0" layoutY="23.0" prefHeight="49.0" prefWidth="181.0" promptText="Starting Point" />
-                <ComboBox layoutX="26.0" layoutY="97.0" prefHeight="49.0" prefWidth="181.0" promptText="Ending Point" />
+                <ComboBox fx:id="startPointCombo" layoutX="26.0" layoutY="23.0" prefHeight="49.0" prefWidth="181.0" promptText="Starting Point" />
+                <ComboBox fx:id="endPointCombo" layoutX="26.0" layoutY="97.0" prefHeight="49.0" prefWidth="181.0" promptText="Ending Point" />
                 <VBox layoutX="554.0" layoutY="47.0" prefHeight="450.0" prefWidth="218.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: gray;">
                     <children>
                         <Label alignment="CENTER" prefHeight="33.0" prefWidth="228.0" style="-fx-background-color: white;" text="Avoid Locations">

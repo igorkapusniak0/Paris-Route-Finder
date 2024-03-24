@@ -5,13 +5,8 @@ import Models.Pixel;
 import Utilites.Algorithms;
 import Utilites.Graph;
 import Utilites.Utilities;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 
 import java.util.*;
@@ -22,10 +17,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class ParisRouteController {
     @FXML
@@ -37,16 +28,21 @@ public class ParisRouteController {
     private int[] endPoint = new int[2];
     private Image blackAndWhiteImage = null;
     private Graph graph = new Graph();
+    private ArrayList<POI> POIArray = null;
 
 
     @FXML
     public ComboBox<String> algorithmsCombo;
 
+    @FXML
+    public ComboBox<POI> startPointCombo;
+    @FXML
+    public ComboBox<POI> endPointCombo;
+
 
     public void initialize() {
         parisMap = imageView.getImage();
         setAlgorithmsCombo();
-        POILinks();
         //imageView.setImage(parisMap);
         blackAndWhiteImage = Utilities.convertToBlackAndWhite(parisMap);
         //imageView.setImage(blackAndWhiteImage);
@@ -54,10 +50,12 @@ public class ParisRouteController {
         //System.out.println(matrix());
         Utilities.graphConnections(blackAndWhiteImage, graph);
         //drawPath();
-        test();
-
-
-
+        //test();
+        setPOIS();
+        setPOICombo();
+    }
+    private void setPOIS(){
+         POIArray =  Utilities.poiLinks(Utilities.readInDatabase());
     }
     private void setAlgorithmsCombo(){
         algorithmsCombo.getItems().addAll(
@@ -66,10 +64,14 @@ public class ParisRouteController {
                 "Dijkstra's Algorithm");
     }
 
+    private void setPOICombo(){
+        startPointCombo.getItems().addAll(POIArray);
+        endPointCombo.getItems().addAll(POIArray);
+    }
+
     @FXML
     public void setStartPoint(){
         startPoint = getCoordinates();
-
     }
     @FXML
     public void setEndPoint(){
@@ -138,30 +140,54 @@ public class ParisRouteController {
     private void calculatePath(){
         Pixel startPixel = graph.pixelGraph[startPoint[1]][startPoint[0]];
         Pixel endPixel = graph.pixelGraph[endPoint[1]][endPoint[0]];
-        System.out.println(startPixel + ", " + endPixel);
-        List<int[]> path = null;
+        POI startPOI = startPointCombo.getValue();
         String selectedAlgorithm = algorithmsCombo.getValue();
-        if ("Depth First Search".equals(selectedAlgorithm)){
-            path = Algorithms.findPathDepthFirst(startPixel,endPixel);
-        }
-        if ("Breadth First Search".equals(selectedAlgorithm)){
-            path = Algorithms.BFSAlgorithm(startPixel,endPixel);
+        POI endPOI = endPointCombo.getValue();
+        if (startPOI!=null && endPOI!=null){
+            List<POI> pathPOI = null;
+            if ("Depth First Search".equals(selectedAlgorithm)){
+                pathPOI = Algorithms.DFSAlgorithm2(startPOI,endPOI);
+            }
+            if ("Breadth First Search".equals(selectedAlgorithm)){
+                pathPOI = Algorithms.BFSAlgorithm2(startPOI,endPOI);
 
+            }
+            if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
+                pathPOI = Algorithms.BFSAlgorithm2(startPOI,endPOI);
+            }
+            for (int i =0;i<pathPOI.size()-1;i++) {
+                POI current = pathPOI.get(i);
+                POI ahead = pathPOI.get(i+1);
+                Line line = new Line(current.getX(),current.getY(),ahead.getX(),ahead.getY());
+                line.setUserData("pathLine");
+                ((Pane) imageView.getParent()).getChildren().add(line);
+            }
         }
-        if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
-            path = Algorithms.BFSAlgorithm(startPixel,endPixel);
+        if (startPixel!=null && endPixel!=null){
+            System.out.println(startPixel + ", " + endPixel);
+            List<int[]> path = null;
 
+            if ("Depth First Search".equals(selectedAlgorithm)){
+                path = Algorithms.DFSAlgorithm(startPixel,endPixel);
+            }
+            if ("Breadth First Search".equals(selectedAlgorithm)){
+                path = Algorithms.BFSAlgorithm(startPixel,endPixel);
+
+            }
+            if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
+                path = Algorithms.BFSAlgorithm(startPixel,endPixel);
+            }
+            for (int[] coords : path) {
+                Circle circle = new Circle();
+                circle.setFill(Color.GREEN);
+                circle.setCenterX(coords[0]+1);
+                circle.setCenterY(coords[1]+1);
+                circle.setRadius(1);
+                circle.setUserData("pathCircle");
+                ((Pane) imageView.getParent()).getChildren().add(circle);
+            }
         }
 
-        for (int[] coords : path) {
-            Circle circle = new Circle();
-            circle.setFill(Color.GREEN);
-            circle.setCenterX(coords[0]+1);
-            circle.setCenterY(coords[1]+1);
-            circle.setRadius(1);
-            circle.setUserData("pathCircle");
-            ((Pane) imageView.getParent()).getChildren().add(circle);
-        }
     }
     @FXML
     public void clearMap(){
@@ -175,17 +201,11 @@ public class ParisRouteController {
         pane.getChildren().removeIf(node -> "pathCircle".equals(node.getUserData()));
     }
 
-    private ArrayList<POI> getPOIs(){
-        ArrayList<POI> POIs = Utilities.readInDatabase();
-        return POIs;
-    }
 
-    private ArrayList<POI> POILinks(){
-        ArrayList<POI> poiArrayList = Utilities.poiLinks(getPOIs());
-        return poiArrayList;
-    }
+
+
     private void test(){
-        ArrayList<POI> list = POILinks();
+        ArrayList<POI> list = POIArray;
         for (POI poi : list){
             System.out.println(poi.getName());
             HashMap<Double, POI> linkedPOIs = poi.getPOIs();
@@ -203,6 +223,7 @@ public class ParisRouteController {
             }
         }
     }
+
 
 
 
