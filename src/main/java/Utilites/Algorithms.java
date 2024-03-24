@@ -1,6 +1,7 @@
 package Utilites;
 
 
+import Models.GraphNode;
 import Models.Pixel;
 import javafx.application.Platform;
 import javafx.scene.image.ImageView;
@@ -10,6 +11,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.*;
 import java.util.LinkedList;
+import java.util.function.Function;
 
 public class Algorithms {
 
@@ -79,6 +81,35 @@ public class Algorithms {
         }
         return new LinkedList<>();
     }
+//    public static <T extends GraphNode<T>> List<T> BFSAlgorithm2(T startNode, T endNode) {
+//        Queue<T> queue = new LinkedList<>();
+//        Map<T, T> cameFrom = new HashMap<>();
+//        Set<T> visited = new HashSet<>();
+//
+//        queue.add(startNode);
+//        visited.add(startNode);
+//        cameFrom.put(startNode, null);
+//
+//        while (!queue.isEmpty()) {
+//            T current = queue.remove();
+//            if (current.equals(endNode)) {
+//                List<T> path = new LinkedList<>();
+//                for (T at = endNode; at != null; at = cameFrom.get(at)) {
+//                    path.add(0, at);
+//                }
+//                return path;
+//            }
+//
+//            for (T neighbour : current.getNeighbours()) {
+//                if (!visited.contains(neighbour)) {
+//                    visited.add(neighbour);
+//                    queue.add(neighbour);
+//                    cameFrom.put(neighbour, current);
+//                }
+//            }
+//        }
+//        return new LinkedList<>();
+//    }
 
 
 
