@@ -43,7 +43,12 @@ public class GraphNode {
         adjList.add(destNode);
         destNode.adjList.add(this);
     }
-    public List getLinks(){
+    public List<GraphNode> getLinks(){
         return adjList;
+    }
+
+    @Override
+    public String toString(){
+        return getName();
     }
 }

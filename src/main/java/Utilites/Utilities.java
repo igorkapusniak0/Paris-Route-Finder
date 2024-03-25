@@ -126,4 +126,7 @@ public class Utilities {
         }
         return arrayList;
     }
+    public static ArrayList<GraphNode> getPOIs(){
+        return poiLinks(readInDatabase());
+    }
 }
