@@ -1,5 +1,6 @@
 package Utilites;
 
+import Models.GraphNode;
 import Models.POI;
 import Models.Pixel;
 import javafx.scene.image.PixelReader;
@@ -54,7 +55,7 @@ public class Utilities {
         for (int y = 0; y<width;y++){
             for (int x = 0; x<height;x++){
                 if(pixelReader.getColor(x,y).equals(Color.WHITE)){
-                    graph.pixelGraph[y][x] = new Pixel(new int[]{x,y});
+                    graph.pixelGraph[y][x] = new GraphNode(null,x,y);
                 }else{
                     graph.pixelGraph[y][x] = null;
                 }
@@ -83,15 +84,15 @@ public class Utilities {
         }
     }
 
-    public static ArrayList<POI> readInDatabase(){
+    public static ArrayList<GraphNode> readInDatabase(){
         String line = "";
-        ArrayList<POI> POIs = new ArrayList<>();
+        ArrayList<GraphNode> POIs = new ArrayList<>();
         try {
             File database = new File("src/main/resources/Data/POI.csv");
             BufferedReader bufferedReader = new BufferedReader(new FileReader(database));
             while ((line = bufferedReader.readLine())!=null){
                 String[] values = line.split(",");
-                POI poi = new POI(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()));
+                GraphNode poi = new GraphNode(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()));
                 POIs.add(poi);
             }
         } catch (IOException e) {
@@ -100,10 +101,10 @@ public class Utilities {
         return POIs;
     }
 
-    public static ArrayList<POI> poiLinks(ArrayList<POI> POIs){
-        ArrayList<POI> arrayList = new ArrayList<>();
-        for(POI poi : POIs){
-            for (POI poi2 : POIs) {
+    public static ArrayList<GraphNode> poiLinks(ArrayList<GraphNode> POIs){
+        ArrayList<GraphNode> arrayList = new ArrayList<>();
+        for(GraphNode poi : POIs){
+            for (GraphNode poi2 : POIs) {
                 if (poi!=poi2){
                     int x1 = poi.getX();
                     int y1 = poi.getY();
@@ -112,13 +113,11 @@ public class Utilities {
                     int xDiff = Math.abs(x2-x1);
                     int yDiff = Math.abs(y2-y1);
                     double distance = Math.sqrt((Math.pow(xDiff,2))+(Math.pow(yDiff,2)));
-                    if (poi2.getPOIs()!=null ){
+                    if (poi2.getLinks()!=null ){
                         if (distance<=50){
-                            poi.getPOIs().put(distance, poi2);
-                            poi2.getPOIs().put(distance,poi);
-                        } else if (poi.getPOIs().size()<=3 && distance<=200 && poi2.getPOIs().size()<=3) {
-                            poi.getPOIs().put(distance, poi2);
-                            poi2.getPOIs().put(distance,poi);
+                            poi.connectToNodeUndirected(poi2);
+                        } else if (poi.getLinks().size()<=4 && distance<=200 && poi2.getLinks().size()<=4) {
+                            poi.connectToNodeUndirected(poi2);
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.GraphNode;
 import Models.POI;
 import Models.Pixel;
 import Utilites.Algorithms;
@@ -79,7 +80,7 @@ public class ParisRouteController {
     private void graph() {
         int height = (int) blackAndWhiteImage.getHeight();
         int width = (int) blackAndWhiteImage.getWidth();
-        Pixel[][] pixelGraph = new Pixel[height][width];
+        GraphNode[][] pixelGraph = new GraphNode[height][width];
         graph.setPixelGraph(pixelGraph);
         Utilities.convertToPixels(blackAndWhiteImage, graph);
     }
@@ -95,15 +96,7 @@ public class ParisRouteController {
         return string;
     }
 
-    public void showlinks() {
-        for (int i = 0; i < (int) blackAndWhiteImage.getWidth(); i++) {
-            for (int ii = 0; ii < (int) blackAndWhiteImage.getHeight(); ii++) {
-                if (graph.pixelGraph[i][ii] instanceof Pixel) {
-                    System.out.println(graph.pixelGraph[i][ii].links());
-                }
-            }
-        }
-    }
+
     private void drawEdgeCircle(int[] coords){
         Circle circle = new Circle();
         circle.setFill(Color.RED);
@@ -136,10 +129,10 @@ public class ParisRouteController {
 
     @FXML
     private void calculatePath(){
-        Pixel startPixel = graph.pixelGraph[startPoint[1]][startPoint[0]];
-        Pixel endPixel = graph.pixelGraph[endPoint[1]][endPoint[0]];
+        GraphNode startPixel = graph.pixelGraph[startPoint[1]][startPoint[0]];
+        GraphNode endPixel = graph.pixelGraph[endPoint[1]][endPoint[0]];
         System.out.println(startPixel + ", " + endPixel);
-        List<int[]> path = null;
+        List<GraphNode> path = null;
         String selectedAlgorithm = algorithmsCombo.getValue();
         if ("Depth First Search".equals(selectedAlgorithm)){
             path = Algorithms.findPathDepthFirst(startPixel,endPixel);
@@ -153,11 +146,11 @@ public class ParisRouteController {
 
         }
 
-        for (int[] coords : path) {
+        for (GraphNode coords : path) {
             Circle circle = new Circle();
             circle.setFill(Color.GREEN);
-            circle.setCenterX(coords[0]+1);
-            circle.setCenterY(coords[1]+1);
+            circle.setCenterX(coords.getX());
+            circle.setCenterY(coords.getY());
             circle.setRadius(1);
             circle.setUserData("pathCircle");
             ((Pane) imageView.getParent()).getChildren().add(circle);
@@ -175,28 +168,27 @@ public class ParisRouteController {
         pane.getChildren().removeIf(node -> "pathCircle".equals(node.getUserData()));
     }
 
-    private ArrayList<POI> getPOIs(){
-        ArrayList<POI> POIs = Utilities.readInDatabase();
+    private ArrayList<GraphNode> getPOIs(){
+        ArrayList<GraphNode> POIs = Utilities.readInDatabase();
         return POIs;
     }
 
-    private ArrayList<POI> POILinks(){
-        ArrayList<POI> poiArrayList = Utilities.poiLinks(getPOIs());
+    private ArrayList<GraphNode> POILinks(){
+        ArrayList<GraphNode> poiArrayList = Utilities.poiLinks(getPOIs());
         return poiArrayList;
     }
     private void test(){
-        ArrayList<POI> list = POILinks();
-        for (POI poi : list){
+        ArrayList<GraphNode> list = POILinks();
+        for (GraphNode poi : list){
             System.out.println(poi.getName());
-            HashMap<Double, POI> linkedPOIs = poi.getPOIs();
+            List<GraphNode> linkedPOIs = poi.getLinks();
             Pane pane = (Pane) imageView.getParent();
             int radius = 4;
             Circle circle = new Circle(poi.getX()+radius,poi.getY()+radius,radius,Color.GREEN);
             pane.getChildren().add(circle);
 
-            for (Map.Entry<Double, POI> entry : linkedPOIs.entrySet()) {
-                POI linkedPOI = entry.getValue();
-                System.out.println(" POI: " + linkedPOI.getName() + " Distance: " + entry.getKey());
+            for (GraphNode graphNode: linkedPOIs) {
+                GraphNode linkedPOI = graphNode;
                 Line line = new Line(linkedPOI.getX()+radius,linkedPOI.getY()+radius,poi.getX()+radius,poi.getY()+radius);
                 line.setFill(Color.RED);
                 pane.getChildren().add(line);

@@ -1,11 +1,12 @@
 package Utilites;
 
+import Models.GraphNode;
 import Models.Pixel;
 
 public class Graph {
-    public Pixel[][] pixelGraph;
+    public GraphNode[][] pixelGraph;
 
-    public void setPixelGraph(Pixel[][] pixelGraph) {
+    public void setPixelGraph(GraphNode[][] pixelGraph) {
         this.pixelGraph = pixelGraph;
     }
 }
