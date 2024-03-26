@@ -60,6 +60,7 @@
                         <Font name="Times New Roman Bold Italic" size="43.0" />
                     </font>
                 </Label>
+            <Button layoutX="529.0" layoutY="780.0" mnemonicParsing="false" text="POI Links "  onAction="#showAllPOILinks"/>
             </children></AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="739.0" prefWidth="535.0" style="-fx-background-color: #d3d3d3;">
             <children>
@@ -100,11 +101,11 @@
                             </font>
                         </Label>
                         <TextField fx:id="waypointTextField" prefHeight="25.0" prefWidth="180.0" text="Name Waypoint:" />
-                        <ComboBox fx:id="waypointCombo" prefHeight="25.0" prefWidth="240.0" promptText="Waypoints" />
+                  <Button mnemonicParsing="false" onAction="#setWaypoint" prefHeight="25.0" prefWidth="237.0" text="Set Location" />
                         <ListView fx:id="waypointListView" prefHeight="283.0" prefWidth="218.0" />
                         <HBox alignment="CENTER" prefHeight="0.0" prefWidth="204.0" spacing="10.0">
                             <children>
-                                <Button alignment="CENTER" mnemonicParsing="false" text="Add" onAction="#addWaypoint">
+                                <Button alignment="CENTER" mnemonicParsing="false" onAction="#addWaypoint" text="Add">
                                     <font>
                                         <Font name="Times New Roman Bold Italic" size="14.0" />
                                     </font>
@@ -125,11 +126,11 @@
                                 <Font name="Times New Roman Bold Italic" size="18.0" />
                             </font>
                         </Label>
-                        <ComboBox prefHeight="25.0" prefWidth="215.0" promptText="Points of Interst" />
-                        <ListView prefHeight="147.0" prefWidth="189.0" />
+                        <ComboBox fx:id="POICombo" prefHeight="25.0" prefWidth="215.0" promptText="Points of Interst" />
+                        <ListView fx:id="POIList" prefHeight="147.0" prefWidth="189.0" />
                         <HBox alignment="CENTER" prefHeight="41.0" prefWidth="189.0" spacing="10.0">
                             <children>
-                                <Button alignment="CENTER" mnemonicParsing="false" text="Add">
+                                <Button alignment="CENTER" mnemonicParsing="false" onAction="#addPOI" text="Add">
                                     <font>
                                         <Font name="Times New Roman Bold Italic" size="14.0" />
                                     </font>
@@ -185,14 +186,14 @@
                         </HBox>
                     </children>
                 </VBox>
-                <VBox alignment="TOP_CENTER" layoutX="310.0" layoutY="324.0" prefHeight="392.0" prefWidth="191.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: grey;">
+                <VBox alignment="TOP_CENTER" layoutX="310.0" layoutY="324.0" prefHeight="215.0" prefWidth="191.0" spacing="5.0" style="-fx-background-color: #CEEBED; -fx-border-color: grey;">
                     <children>
                         <Label alignment="CENTER" prefHeight="33.0" prefWidth="202.0" style="-fx-background-color: white;" text="DFS Routes">
                             <font>
                                 <Font name="Times New Roman Bold Italic" size="18.0" />
                             </font>
                         </Label>
-                        <ListView prefHeight="316.0" prefWidth="189.0" />
+                  <TreeView fx:id="DFSRoutes" prefHeight="200.0" prefWidth="200.0" />
                         <Label text="Displaying 20 Routes">
                             <font>
                                 <Font name="Times New Roman Bold Italic" size="12.0" />
@@ -230,8 +231,11 @@
                         <ComboBox prefHeight="0.0" prefWidth="150.0" />
                     </children>
                 </VBox>
-            <Button layoutX="41.0" layoutY="72.0" mnemonicParsing="false" onAction="#setStartPoint" text="Start" />
-            <Button layoutX="41.0" layoutY="146.0" mnemonicParsing="false" onAction="#setEndPoint" text="End" />
+            <Button layoutX="318.0" layoutY="598.0" mnemonicParsing="false" onAction="#setStartPoint" text="Start" />
+            <Button layoutX="321.0" layoutY="642.0" mnemonicParsing="false" onAction="#setEndPoint" text="End" />
+            <Label fx:id="startPixelCoord" layoutX="375.0" layoutY="601.0" prefHeight="20.0" prefWidth="36.0" text="Start:" />
+            <Label fx:id="endPixelCoord" layoutX="375.0" layoutY="646.0" text="End: " />
+            <Button layoutX="339.0" layoutY="688.0" mnemonicParsing="false" onAction="#calculatePixelPath" text="Calculate Path" />
             </children></AnchorPane>
     </items>
 </SplitPane>

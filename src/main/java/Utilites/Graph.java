@@ -9,4 +9,7 @@ public class Graph {
     public void setPixelGraph(GraphNode[][] pixelGraph) {
         this.pixelGraph = pixelGraph;
     }
+
 }
+
+

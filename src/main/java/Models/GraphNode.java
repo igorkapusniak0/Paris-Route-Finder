@@ -2,6 +2,7 @@ package Models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class GraphNode {
@@ -51,4 +52,6 @@ public class GraphNode {
     public String toString(){
         return getName();
     }
+
+
 }
