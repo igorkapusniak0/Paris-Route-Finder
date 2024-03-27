@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.45, 0.5" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ParisRouteController">
+<SplitPane dividerPositions="0.45" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ParisRouteController">
     <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #CEEBED;">
             <children>
@@ -34,7 +34,7 @@
                   <image>
                      <Image url="@../Image/full-image630.png" />
                   </image></ImageView>
-               <ImageView fx:id="iconImageView" fitHeight="630.0" fitWidth="630.0" layoutX="3.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="iconImageView" fitHeight="630.0" fitWidth="630.0" layoutX="3.0" layoutY="2.0" onMouseClicked="#getCoordinates" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../Image/IconsParis.png" />
                   </image>
@@ -61,6 +61,7 @@
                     </font>
                 </Label>
             <Button layoutX="529.0" layoutY="780.0" mnemonicParsing="false" onAction="#showAllPOILinks" text="POI Links " />
+            <Label fx:id="currentCoord" layoutX="462.0" layoutY="72.0" prefHeight="17.0" prefWidth="174.0" text="Current Coordinate: " />
             </children></AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="739.0" prefWidth="535.0" style="-fx-background-color: #d3d3d3;">
             <children>
@@ -233,8 +234,8 @@
                 </VBox>
             <Button layoutX="318.0" layoutY="598.0" mnemonicParsing="false" onAction="#setStartPoint" text="Start" />
             <Button layoutX="321.0" layoutY="642.0" mnemonicParsing="false" onAction="#setEndPoint" text="End" />
-            <Label fx:id="startPixelCoord" layoutX="375.0" layoutY="601.0" prefHeight="20.0" prefWidth="36.0" text="Start:" />
-            <Label fx:id="endPixelCoord" layoutX="375.0" layoutY="646.0" text="End: " />
+            <Label fx:id="startPixelCoord" layoutX="375.0" layoutY="601.0" prefHeight="20.0" prefWidth="120.0" text="Start:" />
+            <Label fx:id="endPixelCoord" layoutX="375.0" layoutY="646.0" prefHeight="17.0" prefWidth="120.0" text="End: " />
             <Button layoutX="339.0" layoutY="688.0" mnemonicParsing="false" onAction="#calculatePixelPath" text="Calculate Path" />
             </children></AnchorPane>
     </items>

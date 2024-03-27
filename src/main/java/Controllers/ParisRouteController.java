@@ -38,7 +38,8 @@ public class ParisRouteController {
     public ComboBox<GraphNode> endCombo;
 
     private List<List<GraphNode>> allPaths;
-
+    @FXML
+    Label currentCoord;
     @FXML
     TextField waypointTextField;
     @FXML
@@ -64,7 +65,6 @@ public class ParisRouteController {
     public void initialize() {
         parisMap = imageView.getImage();
         setAlgorithmsCombo();
-        coord = getCoordinates();
         POIs();
         POILinks();
         blackAndWhiteImage = Utilities.convertToBlackAndWhite(parisMap);
@@ -119,14 +119,45 @@ public class ParisRouteController {
 
     @FXML
     public void setStartPoint(){
-        coord = getCoordinates();
-        startPixelCoord.setText(coord[0] + ", " + coord[1]);
+        startCoord = coord;
+        startPixelCoord.setText("Start: "+coord[0] + ", " + coord[1]);
+        Pane pane = (Pane) imageView.getParent();
+        pane.getChildren().removeIf(node -> "startIcon".equals(node.getUserData()));
+        Image waypointImage;
+        try {
+            waypointImage = new Image(new FileInputStream("src/main/resources/Image/start.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            waypointImage = null;
+        }
+        ImageView iconView = new ImageView();
+        iconView.setImage(waypointImage);
+        iconView.setX((coord[0]-waypointImage.getWidth()/2)+3);
+        iconView.setY((coord[1]-waypointImage.getHeight()/2)-8);
+        iconView.setUserData("startIcon");
+        ((Pane) imageView.getParent()).getChildren().add(iconView);
 
     }
     @FXML
     public void setEndPoint(){
-        coord = getCoordinates();
-        endPixelCoord.setText(coord[0] + ", " + coord[1]);
+        endCoord = coord;
+        endPixelCoord.setText("End: "+coord[0] + ", " + coord[1]);
+        Pane pane = (Pane) imageView.getParent();
+        pane.getChildren().removeIf(node -> "endIcon".equals(node.getUserData()));
+        Image waypointImage;
+        try {
+            waypointImage = new Image(new FileInputStream("src/main/resources/Image/end.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            waypointImage = null;
+        }
+        ImageView iconView = new ImageView();
+        iconView.setImage(waypointImage);
+        iconView.setX(coord[0]-5);
+        iconView.setY(coord[1]-waypointImage.getHeight()+5);
+        iconView.setUserData("endIcon");
+        ((Pane) imageView.getParent()).getChildren().add(iconView);
+
 
     }
     private void startAndEndCombo(){
@@ -172,31 +203,38 @@ public class ParisRouteController {
         return string;
     }
 
+    private void clearPointer(){
+        Pane pane = (Pane) imageView.getParent();
+        System.out.println("Children before removal: " + pane.getChildren().size());
+        pane.getChildren().removeIf(node -> "EdgeCircle".equals(node.getUserData()));
+        System.out.println("Children after removal: " + pane.getChildren().size());
 
-
-    private int[] getCoordinates(){
-        int[] coordinates = new int[2];
+    }
+    @FXML
+    public void getCoordinates(){
         iconImageView.setOnMouseClicked(mouseEvent -> {
+            clearPointer();
             if (blackAndWhiteImage!=null){
                 if (mouseEvent.getButton()== MouseButton.PRIMARY){
+                    int[] coordinates = new int[2];
                     coordinates[0] = (int) mouseEvent.getX();
                     coordinates[1] = (int) mouseEvent.getY();
                     System.out.println(coordinates[0] + ", " + coordinates[1]);
                     if (graph.pixelGraph[coordinates[1]][coordinates[0]] != null){
                         System.out.println("pixel");
                     }
-
+                    Circle circle = new Circle();
+                    circle.setFill(Color.BLUE);
+                    circle.setCenterX(coordinates[0]+3);
+                    circle.setCenterY(coordinates[1]+3);
+                    circle.setRadius(3);
+                    circle.setUserData("EdgeCircle");
+                    ((Pane) imageView.getParent()).getChildren().add(circle);
+                    currentCoord.setText("Current Coordinate: " + coordinates[0]+ ", "+ coordinates[1]);
+                    coord = coordinates;
                 }
-                Circle circle = new Circle();
-                circle.setFill(Color.RED);
-                circle.setCenterX(coordinates[0]+3);
-                circle.setCenterY(coordinates[1]+3);
-                circle.setRadius(3);
-                circle.setUserData("EdgeCircle");
-                ((Pane) imageView.getParent()).getChildren().add(circle);
             }
         });
-        return coordinates;
     }
 
     private void drawCircle(int[] coords,String type){
@@ -287,24 +325,13 @@ public class ParisRouteController {
     private void calculatePixelPath(){
         GraphNode startPixel;
         GraphNode endPixel;
-        List<GraphNode> toVisit = getPOIsToVisit();
         List<GraphNode> path = null;
-        String selectedAlgorithm = algorithmsCombo.getValue();
         if (startCoord!=null && endCoord!=null){
             startPixel = graph.pixelGraph[startCoord[1]][startCoord[0]];
             endPixel = graph.pixelGraph[endCoord[1]][endCoord[0]];
             System.out.println(startPixel + ", " + endPixel);
             if (startPixel!=null && endPixel!=null){
-                if ("Depth First Search".equals(selectedAlgorithm)){
-                    path = Algorithms.DFSAlgorithm(startPixel,endPixel);
-                }
-                if ("Breadth First Search".equals(selectedAlgorithm)){
-                    path = Algorithms.BFSAlgorithm(startPixel,endPixel);
-                }
-                if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
-                    path = Algorithms.dijkstraAlgorithm(startPixel,endPixel);
-
-                }
+                path = Algorithms.BFSAlgorithm(startPixel,endPixel);
             }
         }
         if (path!=null){
