@@ -26,6 +26,8 @@ public class ParisRouteController {
     public ImageView iconImageView;
     private Image parisMap;
     private int[] coord = new int[2];
+    private int[] startCoord = new int[2];
+    private int[] endCoord = new int[2];
     private Image blackAndWhiteImage = null;
     private Graph graph = new Graph();
     @FXML
@@ -76,15 +78,15 @@ public class ParisRouteController {
 
     @FXML
     public void addWaypoint(){
-        if (waypointCoord!=null){
-            GraphNode waypoint = new GraphNode(waypointTextField.getText(),waypointCoord[0],waypointCoord[1]);
+        if (coord!=null){
+            GraphNode waypoint = new GraphNode(waypointTextField.getText(),coord[0],coord[1]);
             waypointListView.getItems().add(waypoint);
             startCombo.getItems().add(waypoint);
             endCombo.getItems().add(waypoint);
             getPOIs.add(waypoint);
             POILinks();
-            drawCircle(waypointCoord,"General");
-            drawWaypoint(waypointCoord);
+            drawCircle(coord,"General");
+            drawWaypoint(coord);
         }
 
     }
@@ -116,10 +118,16 @@ public class ParisRouteController {
     }
 
     @FXML
-    public int[] setStartPoint(){
+    public void setStartPoint(){
         coord = getCoordinates();
         startPixelCoord.setText(coord[0] + ", " + coord[1]);
-        return coord;
+
+    }
+    @FXML
+    public void setEndPoint(){
+        coord = getCoordinates();
+        endPixelCoord.setText(coord[0] + ", " + coord[1]);
+
     }
     private void startAndEndCombo(){
         startCombo.getItems().addAll(getPOIsLinked);
@@ -140,16 +148,10 @@ public class ParisRouteController {
         }
         return POIList.getItems();
     }
-    @FXML
-    public int[] setEndPoint(){
-        coord = getCoordinates();
-        endPixelCoord.setText(coord[0] + ", " + coord[1]);
-        return coord;
-    }
 
     @FXML
     public void setWaypoint(){
-        waypointCoord = getCoordinates();
+        waypointCoord = coord;
     }
     private void graph() {
         int height = (int) blackAndWhiteImage.getHeight();
@@ -171,14 +173,6 @@ public class ParisRouteController {
     }
 
 
-    private void drawEdgeCircle(int[] coords){
-        Circle circle = new Circle();
-        circle.setFill(Color.RED);
-        circle.setCenterX(coords[0]);
-        circle.setCenterY(coords[1]);
-        circle.setRadius(3);
-        ((Pane) imageView.getParent()).getChildren().add(circle);
-    }
 
     private int[] getCoordinates(){
         int[] coordinates = new int[2];
@@ -296,11 +290,9 @@ public class ParisRouteController {
         List<GraphNode> toVisit = getPOIsToVisit();
         List<GraphNode> path = null;
         String selectedAlgorithm = algorithmsCombo.getValue();
-        if (setStartPoint()!=null && setEndPoint()!=null){
-            System.out.println(setStartPoint());
-            System.out.println(setEndPoint());
-            startPixel = graph.pixelGraph[setStartPoint()[1]][setStartPoint()[0]];
-            endPixel = graph.pixelGraph[setEndPoint()[1]][setEndPoint()[0]];
+        if (startCoord!=null && endCoord!=null){
+            startPixel = graph.pixelGraph[startCoord[1]][startCoord[0]];
+            endPixel = graph.pixelGraph[endCoord[1]][endCoord[0]];
             System.out.println(startPixel + ", " + endPixel);
             if (startPixel!=null && endPixel!=null){
                 if ("Depth First Search".equals(selectedAlgorithm)){
