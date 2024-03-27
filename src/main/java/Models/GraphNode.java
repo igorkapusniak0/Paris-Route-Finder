@@ -2,14 +2,28 @@ package Models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Objects;
 
 
 public class GraphNode {
     public String name;
     public int x;
+    public int distance=Integer.MAX_VALUE;
     public int y;
     public List<GraphNode> adjList=new ArrayList<>();
+    public HashMap<GraphNode, Double> adjacencies = new HashMap<>();
+
+    public void listToHashMap(){
+        for (GraphNode node : adjList){
+            double distance = calculateDistance(this,node);
+            adjacencies.put(node,distance);
+        }
+    }
+
+    private double calculateDistance(GraphNode start, GraphNode end){
+        return Math.sqrt(Math.pow(start.getX()-end.getX(),2)+Math.pow(start.getY()-end.getY(),2));
+    }
 
     public void setX(int x){
         this.x = x;

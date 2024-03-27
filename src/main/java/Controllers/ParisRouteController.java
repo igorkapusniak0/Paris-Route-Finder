@@ -25,9 +25,7 @@ public class ParisRouteController {
     @FXML
     public ImageView iconImageView;
     private Image parisMap;
-    private int[] waypoint = new int[2];
-    private int[] startPoint = new int[2];
-    private int[] endPoint = new int[2];
+    private int[] coord = new int[2];
     private Image blackAndWhiteImage = null;
     private Graph graph = new Graph();
     @FXML
@@ -64,7 +62,7 @@ public class ParisRouteController {
     public void initialize() {
         parisMap = imageView.getImage();
         setAlgorithmsCombo();
-        waypoint = getCoordinates();
+        coord = getCoordinates();
         POIs();
         POILinks();
         blackAndWhiteImage = Utilities.convertToBlackAndWhite(parisMap);
@@ -118,9 +116,10 @@ public class ParisRouteController {
     }
 
     @FXML
-    public void setStartPoint(){
-        startPoint = getCoordinates();
-        startPixelCoord.setText(startPoint[0] + ", " + startPoint[1]);
+    public int[] setStartPoint(){
+        coord = getCoordinates();
+        startPixelCoord.setText(coord[0] + ", " + coord[1]);
+        return coord;
     }
     private void startAndEndCombo(){
         startCombo.getItems().addAll(getPOIsLinked);
@@ -142,9 +141,10 @@ public class ParisRouteController {
         return POIList.getItems();
     }
     @FXML
-    public void setEndPoint(){
-        endPoint = getCoordinates();
-        endPixelCoord.setText(endPoint[0] + ", " + endPoint[1]);
+    public int[] setEndPoint(){
+        coord = getCoordinates();
+        endPixelCoord.setText(coord[0] + ", " + coord[1]);
+        return coord;
     }
 
     @FXML
@@ -267,9 +267,10 @@ public class ParisRouteController {
                 path1 = Algorithms.BFSAlgorithm(start,end);
             }
             if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
-                path1 = Algorithms.BFSAlgorithm(start,end);
+                path1 = Algorithms.dijkstraAlgorithm(start,end);
             }
             if (path1!=null){
+                double totalDistance =0;
                 System.out.println(path1.size());
                 for (int i = 0; i<path1.size()-1;i++){
                     GraphNode current = path1.get(i);
@@ -277,11 +278,16 @@ public class ParisRouteController {
                     GraphNode next = path1.get(i+1);
                     //System.out.println(next);
                     Line line = new Line(current.getX(),current.getY(),next.getX(),next.getY());
+                    totalDistance += calculateDistance(current,next);
                     line.setUserData("pathLine");
                     ((Pane) imageView.getParent()).getChildren().add(line);
                 }
+                System.out.println(totalDistance);
             }
         }
+    }
+    private double calculateDistance(GraphNode start, GraphNode end){
+        return Math.sqrt(Math.pow(start.getX()-end.getX(),2)+Math.pow(start.getY()-end.getY(),2));
     }
     @FXML
     private void calculatePixelPath(){
@@ -290,11 +296,11 @@ public class ParisRouteController {
         List<GraphNode> toVisit = getPOIsToVisit();
         List<GraphNode> path = null;
         String selectedAlgorithm = algorithmsCombo.getValue();
-        if (startPoint!=null && endPoint!=null){
-            System.out.println(startPoint);
-            System.out.println(endPoint);
-            startPixel = graph.pixelGraph[startPoint[1]][startPoint[0]];
-            endPixel = graph.pixelGraph[endPoint[1]][endPoint[0]];
+        if (setStartPoint()!=null && setEndPoint()!=null){
+            System.out.println(setStartPoint());
+            System.out.println(setEndPoint());
+            startPixel = graph.pixelGraph[setStartPoint()[1]][setStartPoint()[0]];
+            endPixel = graph.pixelGraph[setEndPoint()[1]][setEndPoint()[0]];
             System.out.println(startPixel + ", " + endPixel);
             if (startPixel!=null && endPixel!=null){
                 if ("Depth First Search".equals(selectedAlgorithm)){
@@ -304,7 +310,7 @@ public class ParisRouteController {
                     path = Algorithms.BFSAlgorithm(startPixel,endPixel);
                 }
                 if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
-                    path = Algorithms.BFSAlgorithm(startPixel,endPixel);
+                    path = Algorithms.dijkstraAlgorithm(startPixel,endPixel);
 
                 }
             }

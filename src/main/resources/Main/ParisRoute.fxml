@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.45" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ParisRouteController">
+<SplitPane dividerPositions="0.45, 0.5" maxHeight="-Infinity" maxWidth="1480.0" minHeight="830.0" minWidth="1480.0" prefHeight="830.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ParisRouteController">
     <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #CEEBED;">
             <children>
@@ -60,7 +60,7 @@
                         <Font name="Times New Roman Bold Italic" size="43.0" />
                     </font>
                 </Label>
-            <Button layoutX="529.0" layoutY="780.0" mnemonicParsing="false" text="POI Links "  onAction="#showAllPOILinks"/>
+            <Button layoutX="529.0" layoutY="780.0" mnemonicParsing="false" onAction="#showAllPOILinks" text="POI Links " />
             </children></AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="739.0" prefWidth="535.0" style="-fx-background-color: #d3d3d3;">
             <children>
