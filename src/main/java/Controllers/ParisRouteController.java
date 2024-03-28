@@ -47,7 +47,11 @@ public class ParisRouteController {
     @FXML
     ComboBox<GraphNode> POICombo;
     @FXML
+    ComboBox<GraphNode> avoidCombo;
+    @FXML
     ListView<GraphNode> POIList;
+    @FXML
+    ListView<GraphNode> avoidList;
     private int[] waypointCoord = new int[2];
 
     @FXML
@@ -121,42 +125,61 @@ public class ParisRouteController {
     public void setStartPoint(){
         startCoord = coord;
         startPixelCoord.setText("Start: "+coord[0] + ", " + coord[1]);
-        Pane pane = (Pane) imageView.getParent();
-        pane.getChildren().removeIf(node -> "startIcon".equals(node.getUserData()));
-        Image waypointImage;
-        try {
-            waypointImage = new Image(new FileInputStream("src/main/resources/Image/start.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            waypointImage = null;
+        if (graph.pixelGraph[coord[1]][coord[0]] != null){
+            Pane pane = (Pane) imageView.getParent();
+            pane.getChildren().removeIf(node -> "startIcon".equals(node.getUserData()));
+            Image waypointImage;
+            try {
+                waypointImage = new Image(new FileInputStream("src/main/resources/Image/start.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                waypointImage = null;
+            }
+            ImageView iconView = new ImageView();
+            iconView.setImage(waypointImage);
+            iconView.setX((coord[0]-waypointImage.getWidth()/2)+3);
+            iconView.setY((coord[1]-waypointImage.getHeight()/2)-8);
+            iconView.setUserData("startIcon");
+            ((Pane) imageView.getParent()).getChildren().add(iconView);
+        }else{
+            startPixelCoord.setText("Start: Invalid Location");
         }
-        ImageView iconView = new ImageView();
-        iconView.setImage(waypointImage);
-        iconView.setX((coord[0]-waypointImage.getWidth()/2)+3);
-        iconView.setY((coord[1]-waypointImage.getHeight()/2)-8);
-        iconView.setUserData("startIcon");
-        ((Pane) imageView.getParent()).getChildren().add(iconView);
 
+    }
+
+    @FXML
+    public void addAvoidPOI(){
+        avoidList.getItems().add(avoidCombo.getValue());
+    }
+    @FXML
+    public void clearAvoidPOIs(){
+        GraphNode node = avoidList.getSelectionModel().getSelectedItem();
+        avoidList.getItems().remove(node);
+        avoidList.refresh();
     }
     @FXML
     public void setEndPoint(){
         endCoord = coord;
-        endPixelCoord.setText("End: "+coord[0] + ", " + coord[1]);
-        Pane pane = (Pane) imageView.getParent();
-        pane.getChildren().removeIf(node -> "endIcon".equals(node.getUserData()));
-        Image waypointImage;
-        try {
-            waypointImage = new Image(new FileInputStream("src/main/resources/Image/end.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            waypointImage = null;
+        if (graph.pixelGraph[coord[1]][coord[0]] != null){
+            endPixelCoord.setText("End: "+coord[0] + ", " + coord[1]);
+            Pane pane = (Pane) imageView.getParent();
+            pane.getChildren().removeIf(node -> "endIcon".equals(node.getUserData()));
+            Image waypointImage;
+            try {
+                waypointImage = new Image(new FileInputStream("src/main/resources/Image/end.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                waypointImage = null;
+            }
+            ImageView iconView = new ImageView();
+            iconView.setImage(waypointImage);
+            iconView.setX(coord[0]-5);
+            iconView.setY(coord[1]-waypointImage.getHeight()+5);
+            iconView.setUserData("endIcon");
+            ((Pane) imageView.getParent()).getChildren().add(iconView);
+        }else{
+            endPixelCoord.setText("End: Invalid Location");
         }
-        ImageView iconView = new ImageView();
-        iconView.setImage(waypointImage);
-        iconView.setX(coord[0]-5);
-        iconView.setY(coord[1]-waypointImage.getHeight()+5);
-        iconView.setUserData("endIcon");
-        ((Pane) imageView.getParent()).getChildren().add(iconView);
 
 
     }
@@ -165,19 +188,38 @@ public class ParisRouteController {
         endCombo.getItems().addAll(getPOIsLinked);
     }
     private void setPOICombo(){
-        for (GraphNode graphNode : getPOIsLinked){
-            POICombo.getItems().add(graphNode);
-        }
+        POICombo.getItems().addAll(getPOIsLinked);
+        avoidCombo.getItems().addAll(getPOIsLinked);
     }
     @FXML
     public void addPOI(){
         POIList.getItems().add(POICombo.getValue());
     }
-    private List<GraphNode> getPOIsToVisit(){
+    private HashSet<GraphNode> getPOIsToVisit(){
         if (POIList.getItems().size()<1){
-            return new ArrayList<>();
+            return new HashSet<>();
         }
-        return POIList.getItems();
+        HashSet<GraphNode> set = new HashSet<>();
+        for (GraphNode graphNode : POIList.getItems()){
+            set.add(graphNode);
+        }
+        return set;
+    }
+    private HashSet<GraphNode> getPOIsToAvoid(){
+        if (avoidList.getItems().size()<1){
+            return new HashSet<>();
+        }
+        HashSet<GraphNode> set = new HashSet<>();
+        for (GraphNode graphNode : avoidList.getItems()){
+            set.add(graphNode);
+        }
+        return set;
+    }
+    @FXML
+    public void clearPOIs(){
+        GraphNode node = POIList.getSelectionModel().getSelectedItem();
+        POIList.getItems().remove(node);
+        POIList.refresh();
     }
 
     @FXML
@@ -205,10 +247,7 @@ public class ParisRouteController {
 
     private void clearPointer(){
         Pane pane = (Pane) imageView.getParent();
-        System.out.println("Children before removal: " + pane.getChildren().size());
         pane.getChildren().removeIf(node -> "EdgeCircle".equals(node.getUserData()));
-        System.out.println("Children after removal: " + pane.getChildren().size());
-
     }
     @FXML
     public void getCoordinates(){
@@ -283,20 +322,21 @@ public class ParisRouteController {
     private void calculatePath(){
         GraphNode start = startCombo.getValue();
         GraphNode end = endCombo.getValue();
-        List<GraphNode> toVisit = getPOIsToVisit();
-        /*for (GraphNode graphNode : toVisit){
-            System.out.println(graphNode);
-        }  */      //System.out.println(start + ", " + end);
+        HashSet<GraphNode> toAvoid = getPOIsToAvoid();
+        HashSet<GraphNode> toGo = getPOIsToVisit();
         List<GraphNode> path1 = null;
         String selectedAlgorithm = algorithmsCombo.getValue();
         if(start!=null && end!=null){
             if ("Depth First Search".equals(selectedAlgorithm)){
-                allPaths = Algorithms.DFSAlgorithmAllPaths(start,end);
+                allPaths = Algorithms.DFSAlgorithmAllPaths(start,end,10);
                 addDFSRoutes();
                 path1 = findShortestPath(start,end);
             }
             if ("Breadth First Search".equals(selectedAlgorithm)){
-                path1 = Algorithms.BFSAlgorithm(start,end);
+                path1 = Algorithms.BFSAlgorithm(start,end,toGo,toAvoid);
+                for (GraphNode graphNode : path1){
+                    System.out.println(graphNode);
+                }
             }
             if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
                 path1 = Algorithms.dijkstraAlgorithm(start,end);
@@ -306,7 +346,7 @@ public class ParisRouteController {
                 System.out.println(path1.size());
                 for (int i = 0; i<path1.size()-1;i++){
                     GraphNode current = path1.get(i);
-                    System.out.println(current);
+                    //System.out.println(current);
                     GraphNode next = path1.get(i+1);
                     //System.out.println(next);
                     Line line = new Line(current.getX(),current.getY(),next.getX(),next.getY());
@@ -331,7 +371,7 @@ public class ParisRouteController {
             endPixel = graph.pixelGraph[endCoord[1]][endCoord[0]];
             System.out.println(startPixel + ", " + endPixel);
             if (startPixel!=null && endPixel!=null){
-                path = Algorithms.BFSAlgorithm(startPixel,endPixel);
+                path = Algorithms.BFSAlgorithm(startPixel,endPixel,new HashSet<>(),new HashSet<>());
             }
         }
         if (path!=null){
@@ -353,8 +393,11 @@ public class ParisRouteController {
     @FXML
     public void clearMap(){
         Pane pane = (Pane) imageView.getParent();
+        pane.getChildren().removeIf(node -> "startIcon".equals(node.getUserData()));
+        pane.getChildren().removeIf(node -> "endIcon".equals(node.getUserData()));
         pane.getChildren().removeIf(node -> node instanceof Circle);
         pane.getChildren().removeIf(node -> node instanceof Line);
+
 
 
     }

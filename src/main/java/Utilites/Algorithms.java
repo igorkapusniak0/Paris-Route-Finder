@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class Algorithms {
 
 
-    public static List<GraphNode> BFSAlgorithm(GraphNode startPixel, GraphNode endPixel) {
+    public static List<GraphNode> BFSAlgorithm(GraphNode startPixel, GraphNode endPixel, Set<GraphNode> goSet, Set<GraphNode> avoidSet) {
         Queue<GraphNode> queue = new LinkedList<>();
         Map<GraphNode, GraphNode> cameFrom = new HashMap<>();
         Set<GraphNode> visited = new HashSet<>();
@@ -20,6 +20,7 @@ public class Algorithms {
 
         while (!queue.isEmpty()) {
             GraphNode current = queue.remove();
+
             if (current.equals(endPixel)) {
                 List<GraphNode> path = new LinkedList<>();
                 for (GraphNode at = endPixel; at != null; at = cameFrom.get(at)) {
@@ -27,9 +28,8 @@ public class Algorithms {
                 }
                 return path;
             }
-
             for (GraphNode neighbour : current.adjList) {
-                if (!visited.contains(neighbour)) {
+                if (!visited.contains(neighbour) && !avoidSet.contains(neighbour)) {
                     visited.add(neighbour);
                     queue.add(neighbour);
                     cameFrom.put(neighbour, current);
@@ -39,40 +39,36 @@ public class Algorithms {
         return new LinkedList<>();
     }
 
-    public static List<List<GraphNode>> DFSAlgorithmAllPaths(GraphNode start, GraphNode target) {
+    public static List<List<GraphNode>> DFSAlgorithmAllPaths(GraphNode start, GraphNode target, int maxDepth) {
         Stack<List<GraphNode>> stack = new Stack<>();
-        Set<GraphNode> visited = new HashSet<>();
         List<List<GraphNode>> allPaths = new ArrayList<>();
 
-        stack.push(new ArrayList<>(Collections.singletonList(start)));
+        stack.push(Arrays.asList(start)); // Start path with the start node
 
         while (!stack.isEmpty()) {
             List<GraphNode> currentPath = stack.pop();
+            if (currentPath.size() > maxDepth) continue; // Skip paths that exceed maxDepth
             GraphNode current = currentPath.get(currentPath.size() - 1);
 
-            allPaths.add(new ArrayList<>(currentPath));
-
             if (current.equals(target)) {
+                allPaths.add(new ArrayList<>(currentPath));
                 continue;
             }
 
-            if (!visited.contains(current)) {
-                visited.add(current);
-
-
-                for (GraphNode neighbour : current.adjList) {
-                    if (!visited.contains(neighbour)) {
-                        List<GraphNode> newPath = new ArrayList<>(currentPath);
-                        newPath.add(neighbour);
-                        stack.push(newPath);
-                    }
+            for (GraphNode neighbour : current.adjList) {
+                if (!currentPath.contains(neighbour)) {
+                    List<GraphNode> newPath = new ArrayList<>(currentPath);
+                    newPath.add(neighbour);
+                    stack.push(newPath);
                 }
             }
         }
         return allPaths;
     }
+
+
     public static List<GraphNode> DFSAlgorithm(GraphNode start, GraphNode target) {
-        Stack<GraphNode> stack = new Stack<>(); // Use Deque as a stack
+        Stack<GraphNode> stack = new Stack<>();
         Map<GraphNode, GraphNode> cameFrom = new HashMap<>();
         Set<GraphNode> visited = new HashSet<>();
         stack.push(start);
@@ -83,7 +79,7 @@ public class Algorithms {
             if (current.equals(target)) {
                 LinkedList<GraphNode> path = new LinkedList<>();
                 for (GraphNode at = target; at != null; at = cameFrom.get(at)) {
-                    path.addFirst(at); // Efficiently add to the front
+                    path.addFirst(at);// Efficiently add to the front
                 }
                 return path;
             }
@@ -92,13 +88,13 @@ public class Algorithms {
                 for (GraphNode neighbour : current.adjList) {
                     if (!visited.contains(neighbour)) {
                         stack.push(neighbour);
-                        cameFrom.put(neighbour, current); // Mark the path for reconstruction
+                        cameFrom.put(neighbour, current);
                     }
                 }
             }
         }
         return null; // Return null if no path is found
-    }
+    }//
 
     public static LinkedList<GraphNode> dijkstraAlgorithm(GraphNode startNode, GraphNode lookingFor) {
         Map<GraphNode, GraphNode> prevNode = new HashMap<>(); // Maps each node to its predecessor on the cheapest path

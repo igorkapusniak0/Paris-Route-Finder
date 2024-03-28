@@ -136,7 +136,7 @@
                                         <Font name="Times New Roman Bold Italic" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear">
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear" onAction="#clearPOIs">
                                     <font>
                                         <Font name="Times New Roman Bold Italic" size="14.0" />
                                     </font>
@@ -154,31 +154,16 @@
                                 <Font name="Times New Roman Bold Italic" size="15.0" />
                             </font>
                         </Label>
-                        <TextField prefHeight="25.0" prefWidth="180.0" text="Name Location:" />
+                        <ComboBox fx:id="avoidCombo" prefHeight="25.0" prefWidth="240.0" promptText="Location" />
+                        <ListView fx:id="avoidList" prefHeight="283.0" prefWidth="218.0" />
                         <HBox alignment="CENTER" prefHeight="0.0" prefWidth="204.0" spacing="10.0">
                             <children>
-                                <Button alignment="CENTER" mnemonicParsing="false" text="Get Location">
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Add" onAction="#addAvoidPOI">
                                     <font>
                                         <Font name="Times New Roman Bold Italic" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button alignment="CENTER" mnemonicParsing="false" text="Add Location">
-                                    <font>
-                                        <Font name="Times New Roman Bold Italic" size="14.0" />
-                                    </font>
-                                </Button>
-                            </children>
-                        </HBox>
-                        <ComboBox prefHeight="25.0" prefWidth="240.0" promptText="Location" />
-                        <ListView prefHeight="283.0" prefWidth="218.0" />
-                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="204.0" spacing="10.0">
-                            <children>
-                                <Button alignment="CENTER" mnemonicParsing="false" text="Add">
-                                    <font>
-                                        <Font name="Times New Roman Bold Italic" size="14.0" />
-                                    </font>
-                                </Button>
-                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear">
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear" onAction="#clearAvoidPOIs">
                                     <font>
                                         <Font name="Times New Roman Bold Italic" size="14.0" />
                                     </font>
