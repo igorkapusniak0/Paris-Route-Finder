@@ -195,15 +195,10 @@ public class ParisRouteController {
     public void addPOI(){
         POIList.getItems().add(POICombo.getValue());
     }
-    private HashSet<GraphNode> getPOIsToVisit(){
-        if (POIList.getItems().size()<1){
-            return new HashSet<>();
-        }
-        HashSet<GraphNode> set = new HashSet<>();
-        for (GraphNode graphNode : POIList.getItems()){
-            set.add(graphNode);
-        }
-        return set;
+    private LinkedList<GraphNode> getPOIsToVisit(){
+        LinkedList<GraphNode> POIs = new LinkedList<>();
+        POIs.addAll(POIList.getItems());
+        return POIs;
     }
     private HashSet<GraphNode> getPOIsToAvoid(){
         if (avoidList.getItems().size()<1){
@@ -323,7 +318,7 @@ public class ParisRouteController {
         GraphNode start = startCombo.getValue();
         GraphNode end = endCombo.getValue();
         HashSet<GraphNode> toAvoid = getPOIsToAvoid();
-        HashSet<GraphNode> toGo = getPOIsToVisit();
+        LinkedList<GraphNode> toGo = getPOIsToVisit();
         List<GraphNode> path1 = null;
         String selectedAlgorithm = algorithmsCombo.getValue();
         if(start!=null && end!=null){
@@ -333,7 +328,7 @@ public class ParisRouteController {
                 path1 = findShortestPath(start,end);
             }
             if ("Breadth First Search".equals(selectedAlgorithm)){
-                path1 = Algorithms.BFSAlgorithm(start,end,toGo,toAvoid);
+                path1 = Algorithms.BFSWithPOIs(start,end,toGo,toAvoid);
                 for (GraphNode graphNode : path1){
                     System.out.println(graphNode);
                 }
@@ -371,7 +366,7 @@ public class ParisRouteController {
             endPixel = graph.pixelGraph[endCoord[1]][endCoord[0]];
             System.out.println(startPixel + ", " + endPixel);
             if (startPixel!=null && endPixel!=null){
-                path = Algorithms.BFSAlgorithm(startPixel,endPixel,new HashSet<>(),new HashSet<>());
+                path = Algorithms.BFSAlgorithm(startPixel,endPixel,new HashSet<>());
             }
         }
         if (path!=null){

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class Algorithms {
 
 
-    public static List<GraphNode> BFSAlgorithm(GraphNode startPixel, GraphNode endPixel, Set<GraphNode> goSet, Set<GraphNode> avoidSet) {
+    public static List<GraphNode> BFSAlgorithm(GraphNode startPixel, GraphNode endPixel, Set<GraphNode> avoidSet) {
         Queue<GraphNode> queue = new LinkedList<>();
         Map<GraphNode, GraphNode> cameFrom = new HashMap<>();
         Set<GraphNode> visited = new HashSet<>();
@@ -24,11 +24,14 @@ public class Algorithms {
             if (current.equals(endPixel)) {
                 List<GraphNode> path = new LinkedList<>();
                 for (GraphNode at = endPixel; at != null; at = cameFrom.get(at)) {
+                    System.out.println(at);
                     path.add(0, at);
                 }
+                System.out.println(cameFrom);
                 return path;
             }
             for (GraphNode neighbour : current.adjList) {
+                // Check if neighbour is in goSet or has not been visited and is not in avoidSet
                 if (!visited.contains(neighbour) && !avoidSet.contains(neighbour)) {
                     visited.add(neighbour);
                     queue.add(neighbour);
@@ -37,6 +40,16 @@ public class Algorithms {
             }
         }
         return new LinkedList<>();
+    }
+
+    public static List<GraphNode> BFSWithPOIs(GraphNode start,GraphNode end,List<GraphNode> goSet, Set<GraphNode> avoidSet){
+        List<GraphNode> path = new LinkedList<>();
+        goSet.add(0,start);
+        goSet.add(goSet.size(),end);
+        for (int i = 0; i<goSet.size()-1;i++){
+            path.addAll(BFSAlgorithm(goSet.get(i),goSet.get(i+1),avoidSet));
+        }
+        return path;
     }
 
     public static List<List<GraphNode>> DFSAlgorithmAllPaths(GraphNode start, GraphNode target, int maxDepth) {
@@ -101,7 +114,7 @@ public class Algorithms {
         Map<GraphNode, Double> distances = new HashMap<>(); // Maps each node to its distance from the start
         PriorityQueue<GraphNode> unencountered = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
 
-        // Initialize distances to all nodes as infinity, except for the start node
+        // Initialise distances to all nodes as infinity, except for the start node
         distances.put(startNode, 0.0); // Distance from start to start is 0
         unencountered.add(startNode);
 
@@ -109,7 +122,11 @@ public class Algorithms {
             GraphNode currentNode = unencountered.poll(); // Node with the smallest distance
             currentNode.listToHashMap();
             if (currentNode.equals(lookingFor)) { // Found the target node
-                return buildPath(lookingFor, prevNode); // Assemble the path from start to the found node
+                LinkedList<GraphNode> path = new LinkedList<>();
+                for (GraphNode at = lookingFor; at != null; at = prevNode.get(at)) {
+                    path.addFirst(at);
+                }
+                return path;
             }
 
             // Iterate over the adjacency list (map) of the current node to update distances
@@ -128,13 +145,9 @@ public class Algorithms {
 
         return null; // No path found
     }
-    private static LinkedList<GraphNode> buildPath(GraphNode target, Map<GraphNode, GraphNode> prevNode) {
-        LinkedList<GraphNode> path = new LinkedList<>();
-        for (GraphNode at = target; at != null; at = prevNode.get(at)) {
-            path.addFirst(at);
-        }
-        return path;
-    }
+
+
+
 }
 
 
