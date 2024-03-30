@@ -323,28 +323,33 @@ public class ParisRouteController {
         String selectedAlgorithm = algorithmsCombo.getValue();
         if(start!=null && end!=null){
             if ("Depth First Search".equals(selectedAlgorithm)){
-                allPaths = Algorithms.DFSAlgorithmAllPaths(start,end,10);
+                allPaths = Algorithms.DFSAlgorithmAllPathsForGoSet(start,end,5,toAvoid,toGo);
                 addDFSRoutes();
                 path1 = findShortestPath(start,end);
+                path1 = Algorithms.DFSPOIs(start,end,toGo,toAvoid);
             }
             if ("Breadth First Search".equals(selectedAlgorithm)){
                 path1 = Algorithms.BFSWithPOIs(start,end,toGo,toAvoid);
-                for (GraphNode graphNode : path1){
-                    System.out.println(graphNode);
-                }
+
             }
             if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
-                path1 = Algorithms.dijkstraAlgorithm(start,end);
+                path1 = Algorithms.dijkstraWithPOIs(start,end,toGo,toAvoid);
             }
             if (path1!=null){
                 double totalDistance =0;
                 System.out.println(path1.size());
                 for (int i = 0; i<path1.size()-1;i++){
                     GraphNode current = path1.get(i);
-                    //System.out.println(current);
                     GraphNode next = path1.get(i+1);
-                    //System.out.println(next);
                     Line line = new Line(current.getX(),current.getY(),next.getX(),next.getY());
+                    if ("Depth First Search".equals(selectedAlgorithm)){
+                        line.setStroke(Color.color(1,0,0,0.5));
+                    } else if ("Breadth First Search".equals(selectedAlgorithm)){
+                        line.setStroke(Color.color(0,1,0,0.5));
+                    } else {
+                        line.setStroke(Color.color(0,0,1,0.5));
+                    }
+                    line.setStrokeWidth(3);
                     totalDistance += calculateDistance(current,next);
                     line.setUserData("pathLine");
                     ((Pane) imageView.getParent()).getChildren().add(line);
