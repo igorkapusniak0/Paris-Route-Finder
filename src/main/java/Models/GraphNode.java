@@ -1,9 +1,12 @@
 package Models;
 
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Objects;
+import javafx.scene.image.Image;
 
 
 public class GraphNode {
@@ -11,6 +14,7 @@ public class GraphNode {
     public int x;
     public int distance=Integer.MAX_VALUE;
     public int y;
+    public Image icon;
     public List<GraphNode> adjList=new ArrayList<>();
     public HashMap<GraphNode, Double> adjacencies = new HashMap<>();
 
@@ -45,15 +49,21 @@ public class GraphNode {
         return y;
     }
 
-    public GraphNode(String name, int x, int y) {
+    public GraphNode(String name, int x, int y, Image icon) {
         setName(name);
         setX(x);
         setY(y);
-
+        setIcon(icon);
     }
     /*public void connectToNodeDirected(GraphNode<T> destNode) {
         adjList.add(destNode);
     }*/
+    public void setIcon(Image icon){
+        this.icon = icon;
+    }
+    public Image getIcon(){
+        return icon;
+    }
     public void connectToNodeUndirected(GraphNode destNode) {
         adjList.add(destNode);
         destNode.adjList.add(this);

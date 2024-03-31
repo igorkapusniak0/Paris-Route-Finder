@@ -30,15 +30,11 @@
                     </fill>
                 </Rectangle>
                 <Pane layoutX="12.0" layoutY="96.0" prefHeight="635.0" prefWidth="635.0" style="-fx-border-width: 5; -fx-border-color: Black;">
-                        <ImageView fx:id="imageView" fitHeight="630.0" fitWidth="630.0" layoutX="3.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../Image/full-image630.png" />
-                  </image></ImageView>
-               <ImageView fx:id="iconImageView" fitHeight="630.0" fitWidth="630.0" layoutX="3.0" layoutY="2.0" onMouseClicked="#getCoordinates" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../Image/IconsParis.png" />
-                  </image>
-               </ImageView>
+                    <ImageView fx:id="imageView" fitHeight="630.0" fitWidth="630.0" layoutX="3.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#getCoordinates">
+                        <image>
+                            <Image url="@../Image/full-image630.png" />
+                        </image>
+                    </ImageView>
                 </Pane>
                 <Button layoutX="289.0" layoutY="752.0" mnemonicParsing="false" onAction="#clearMap" text="Clear Map">
                     <font>
@@ -102,7 +98,7 @@
                             </font>
                         </Label>
                         <TextField fx:id="waypointTextField" prefHeight="25.0" prefWidth="180.0" text="Name Waypoint:" />
-                  <Button mnemonicParsing="false" onAction="#setWaypoint" prefHeight="25.0" prefWidth="237.0" text="Set Location" />
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="237.0" text="Set Location" />
                         <ListView fx:id="waypointListView" prefHeight="283.0" prefWidth="218.0" />
                         <HBox alignment="CENTER" prefHeight="0.0" prefWidth="204.0" spacing="10.0">
                             <children>
@@ -111,7 +107,7 @@
                                         <Font name="Times New Roman Bold Italic" size="14.0" />
                                     </font>
                                 </Button>
-                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear">
+                                <Button alignment="CENTER" mnemonicParsing="false" text="Clear" onAction="#clearWaypoint">
                                     <font>
                                         <Font name="Times New Roman Bold Italic" size="14.0" />
                                     </font>

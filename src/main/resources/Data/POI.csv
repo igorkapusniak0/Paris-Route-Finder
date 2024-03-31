@@ -1,30 +1,30 @@
-Hotel des Invalides, 168, 342
-Sainte Chappele, 359, 351
-Pantheon, 363, 436
-Eiffel Tower, 66, 332
-Place de la Concorde, 216,267
-Palais de Tokyo, 75, 278
-Musee Jacquemart-Andre, 158, 175
-Palais Garnier, 280, 207
-Arc de Triomphe, 65, 191
-Le Centre Pompidou, 400, 299
-Musee Grevin, 192, 172
-Louvre Museum, 312, 309
-Les Catacombes de Paris, 281, 543
-Jardin du Luxembourg, 309, 429
-Botanical Garden, 447, 454
-Parc de Belleville, 577, 131
-The Basilica of the Sacred Heart of Paris, 340, 74
-Grande Halle de la Villete, 620, 51
-Cathedrale Notre-Dame de Paris, 389,372
-Musee National Picasso-Paris, 461, 313
-Ritz Paris, 258,243
-Parc Georges Brassens, 96, 570
-Pont Neuf, 332,339
-Jardin des Tuileries, 244, 281
-Hospital Saint Louis AP-HP, 490, 192
-Petit Palais, 180,261
-Marche Bastille, 510, 336
-Musee National Picasso-Paris, 461, 313
-Hotel du Jeu de Paume, 422, 387
-Place de la Bastille, 497, 378
+Hotel des Invalides, 168, 342, src/main/resources/Image/Hotel_des_Invalides.png
+Sainte Chappele, 359, 351, src/main/resources/Image/Sainte-Chapelle.png
+Pantheon, 363, 436, src/main/resources/Image/Pantheon.png
+Eiffel Tower, 66, 332, src/main/resources/Image/Eiffel-Tower.png
+Place de la Concorde, 216,267, src/main/resources/Image/GeneralIcon1.png
+Palais de Tokyo, 75, 278, src/main/resources/Image/GeneralIcon1.png
+Musee Jacquemart-Andre, 158, 175, src/main/resources/Image/MuseumIcon.png
+Palais Garnier, 280, 207, src/main/resources/Image/ParksIcon.png
+Arc de Triomphe, 65, 191, src/main/resources/Image/Arc-de-Triumph.png
+Le Centre Pompidou, 400, 299, src/main/resources/Image/GeneralIcon1.png
+Musee Grevin, 192, 172, src/main/resources/Image/MuseumIcon.png
+Louvre Museum, 312, 309, src/main/resources/Image/Louvre.png
+Les Catacombes de Paris, 281, 543, src/main/resources/Image/GeneralIcon1.png
+Jardin du Luxembourg, 309, 429, src/main/resources/Image/ParksIcon.png
+Botanical Garden, 447, 454, src/main/resources/Image/ParksIcon.png
+Parc de Belleville, 577, 131, src/main/resources/Image/ParksIcon.png
+The Basilica of the Sacred Heart of Paris, 340, 74, src/main/resources/Image/GeneralIcon1.png
+Grande Halle de la Villete, 620, 51, src/main/resources/Image/GeneralIcon1.png
+Cathedrale Notre-Dame de Paris, 389,372, src/main/resources/Image/Idunno.png
+Musee National Picasso-Paris, 461, 313, src/main/resources/Image/MuseumIcon.png
+Ritz Paris, 258,243, src/main/resources/Image/HotelIcon.png
+Parc Georges Brassens, 96, 570, src/main/resources/Image/ParksIcon.png
+Pont Neuf, 332,339, src/main/resources/Image/GeneralIcon1.png
+Jardin des Tuileries, 244, 281, src/main/resources/Image/ParksIcon.png
+Hospital Saint Louis AP-HP, 490, 192, src/main/resources/Image/HospitalIcon.png
+Petit Palais, 180,261, src/main/resources/Image/HotelIcon.png
+Marche Bastille, 510, 336, src/main/resources/Image/GeneralIcon1.png
+Musee National Picasso-Paris, 461, 313, src/main/resources/Image/MuseumIcon.png
+Hotel du Jeu de Paume, 422, 387, src/main/resources/Image/HotelIcon.png
+Place de la Bastille, 497, 378, src/main/resources/Image/Place-de-la-bastille.png

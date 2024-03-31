@@ -55,7 +55,7 @@ public class Utilities {
         for (int y = 0; y<width;y++){
             for (int x = 0; x<height;x++){
                 if(pixelReader.getColor(x,y).equals(Color.WHITE)){
-                    graph.pixelGraph[y][x] = new GraphNode(null,x,y);
+                    graph.pixelGraph[y][x] = new GraphNode(null,x,y,null);
                 }else{
                     graph.pixelGraph[y][x] = null;
                 }
@@ -92,7 +92,14 @@ public class Utilities {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(database));
             while ((line = bufferedReader.readLine())!=null){
                 String[] values = line.split(",");
-                GraphNode poi = new GraphNode(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()));
+                Image iconImage;
+                try {
+                    iconImage = new Image(new FileInputStream(values[3].trim()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    iconImage = null;
+                }
+                GraphNode poi = new GraphNode(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()),iconImage);
                 POIs.add(poi);
             }
         } catch (IOException e) {

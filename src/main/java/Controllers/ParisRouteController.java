@@ -4,6 +4,7 @@ import Models.GraphNode;
 import Utilites.Algorithms;
 import Utilites.Graph;
 import Utilites.Utilities;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -22,8 +23,7 @@ import javafx.scene.shape.Line;
 public class ParisRouteController {
     @FXML
     public ImageView imageView;
-    @FXML
-    public ImageView iconImageView;
+
     private Image parisMap;
     private int[] coord = new int[2];
     private int[] startCoord = new int[2];
@@ -76,21 +76,28 @@ public class ParisRouteController {
         Utilities.graphConnections(blackAndWhiteImage, graph);
         startAndEndCombo();
         setPOICombo();
-
+        test();
     }
 
 
     @FXML
     public void addWaypoint(){
         if (coord!=null){
-            GraphNode waypoint = new GraphNode(waypointTextField.getText(),coord[0],coord[1]);
+            Image waypointImage;
+            try {
+                waypointImage = new Image(new FileInputStream("src/main/resources/Image/GeneralIcon1.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                waypointImage = null;
+            }
+            GraphNode waypoint = new GraphNode(waypointTextField.getText(),coord[0],coord[1],waypointImage);
             waypointListView.getItems().add(waypoint);
             startCombo.getItems().add(waypoint);
             endCombo.getItems().add(waypoint);
             getPOIs.add(waypoint);
             POILinks();
             drawCircle(coord,"General");
-            drawWaypoint(coord);
+            drawWaypoint(waypoint);
         }
 
     }
@@ -217,10 +224,10 @@ public class ParisRouteController {
         POIList.refresh();
     }
 
-    @FXML
+    /*@FXML
     public void setWaypoint(){
         waypointCoord = coord;
-    }
+    }*/
     private void graph() {
         int height = (int) blackAndWhiteImage.getHeight();
         int width = (int) blackAndWhiteImage.getWidth();
@@ -246,7 +253,7 @@ public class ParisRouteController {
     }
     @FXML
     public void getCoordinates(){
-        iconImageView.setOnMouseClicked(mouseEvent -> {
+        imageView.setOnMouseClicked(mouseEvent -> {
             clearPointer();
             if (blackAndWhiteImage!=null){
                 if (mouseEvent.getButton()== MouseButton.PRIMARY){
@@ -288,20 +295,41 @@ public class ParisRouteController {
         circle.setUserData("EdgeCircle");
         ((Pane) imageView.getParent()).getChildren().add(circle);
     }
-    private void drawWaypoint(int[] coords) {
-        Image waypointImage;
-        try {
-            waypointImage = new Image(new FileInputStream("src/main/resources/Image/GeneralIcon1.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            waypointImage = null;
-        }
+    private void drawWaypoint(GraphNode node) {
         ImageView iconView = new ImageView();
-        iconView.setImage(waypointImage);
-        iconView.setX(coords[0]-waypointImage.getWidth()/2);
-        iconView.setY(coords[1]-waypointImage.getHeight()/2);
-        ((Pane) imageView.getParent()).getChildren().add(iconView);
+        iconView.setImage(node.getIcon());
+        iconView.setX(node.getX() - node.getIcon().getWidth() / 2 + 2);
+        iconView.setY(node.getY() - node.getIcon().getHeight() + 5);
+
+        Circle circle = new Circle(node.getX() + 4, node.getY() + 4, 4, Color.GREEN);
+
+        Label name = new Label(node.getName());
+        name.setLayoutY(node.getY() + 5);
+
+        iconView.setUserData(node.getName());
+        circle.setUserData(node.getName());
+        name.setUserData(node.getName());
+
+        ((Pane) imageView.getParent()).getChildren().addAll(iconView, name, circle);
+
+        // Listener to adjust label's X position based on its width
+        name.widthProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.doubleValue() > 0) { // Check if width is computed
+                Platform.runLater(() -> {
+                    // Adjust layoutX based on the computed width
+                    name.setLayoutX(node.getX() - newValue.doubleValue() / 2);
+                });
+            }
+        });
     }
+    @FXML
+    public void clearWaypoint(){
+        GraphNode node = waypointListView.getSelectionModel().getSelectedItem();
+        waypointListView.getItems().remove(node);
+        Pane pane = (Pane) imageView.getParent();
+        pane.getChildren().removeIf(e -> node.getName().equals(e.getUserData()));
+    }
+
     private List<GraphNode> findShortestPath(GraphNode start, GraphNode end){
         int shortest = Integer.MAX_VALUE;
         List<GraphNode> shortestList = null;
@@ -421,21 +449,20 @@ public class ParisRouteController {
     private void test(){
         ArrayList<GraphNode> list = getPOIsLinked;
         for (GraphNode poi : list){
-            //System.out.println(poi.getName());
-            List<GraphNode> linkedPOIs = poi.getLinks();
-           // System.out.println(poi.getLinks().size());
             Pane pane = (Pane) imageView.getParent();
             int radius = 4;
             Circle circle = new Circle(poi.getX()+radius,poi.getY()+radius,radius,Color.GREEN);
-            pane.getChildren().add(circle);
+            ImageView iconView = new ImageView(poi.getIcon());
+            iconView.setY(poi.getY() - poi.getIcon().getHeight() +5);
+            iconView.setX(poi.getX() - poi.getIcon().getWidth()/2+radius);
+            Label name = new Label(poi.getName());
+            name.setLayoutY(poi.getY()+5);
+            pane.getChildren().addAll(circle,iconView,name);
+            Platform.runLater(() -> {
+                name.setLayoutX(poi.getX() - name.getWidth() / 2);
+            });
 
-            for (GraphNode graphNode: linkedPOIs) {
-               // System.out.println("Linked to " + graphNode);
-                GraphNode linkedPOI = graphNode;
-                Line line = new Line(linkedPOI.getX()+radius,linkedPOI.getY()+radius,poi.getX()+radius,poi.getY()+radius);
-                line.setFill(Color.RED);
-                pane.getChildren().add(line);
-            }
+
         }
     }
     @FXML
