@@ -77,7 +77,4 @@ public class GraphNode {
         return getName();
     }
 
-
-
-
 }

@@ -23,6 +23,14 @@ import javafx.scene.shape.Line;
 public class ParisRouteController {
     @FXML
     public ImageView imageView;
+    @FXML
+    Label DFSDistance;
+    @FXML
+    Label BFSDistance;
+    @FXML
+    Label DijDistance;
+    @FXML
+    TextField DFSRouteLimit;
 
     private Image parisMap;
     private int[] coord = new int[2];
@@ -60,6 +68,7 @@ public class ParisRouteController {
     Label endPixelCoord;
     @FXML
     TreeView<String> DFSRoutes;
+    private int routeLimit = 20;
 
 
 
@@ -107,22 +116,35 @@ public class ParisRouteController {
                 "Breadth First Search",
                 "Dijkstra's Algorithm");
     }
+    @FXML public void getRouteLimit(){
+        int limit = 20;
+        if (!DFSRouteLimit.getText().isBlank()){
+            try {
+                limit = Integer.parseInt(DFSRouteLimit.getText());
+
+            } catch (NumberFormatException e) {
+                limit = 20;
+
+            }
+        }
+        routeLimit = limit;
+    }
 
     private void addDFSRoutes() {
         TreeItem<String> rootItem = new TreeItem<>("Paths");
 
         int pathCounter = 1;
         for (List<GraphNode> path : allPaths) {
+            if (pathCounter<=routeLimit){
+                TreeItem<String> pathItem = new TreeItem<>("Path " + pathCounter);
+                rootItem.getChildren().add(pathItem);
 
-            TreeItem<String> pathItem = new TreeItem<>("Path " + pathCounter);
-            rootItem.getChildren().add(pathItem);
-
-            for (GraphNode node : path) {
-                TreeItem<String> nodeItem = new TreeItem<>(node.toString());
-                pathItem.getChildren().add(nodeItem);
+                for (GraphNode node : path) {
+                    TreeItem<String> nodeItem = new TreeItem<>(node.toString());
+                    pathItem.getChildren().add(nodeItem);
+                }
+                pathCounter++;
             }
-
-            pathCounter++;
         }
         DFSRoutes.setRoot(rootItem);
         DFSRoutes.refresh();
@@ -351,7 +373,7 @@ public class ParisRouteController {
         String selectedAlgorithm = algorithmsCombo.getValue();
         if(start!=null && end!=null){
             if ("Depth First Search".equals(selectedAlgorithm)){
-                allPaths = Algorithms.DFSAlgorithmAllPathsForGoSet(start,end,5,toAvoid,toGo);
+                allPaths = Algorithms.DFSAlgorithmAllPathsForGoSet(start,end,10,toAvoid,toGo);
                 addDFSRoutes();
                 path1 = findShortestPath(start,end);
                 path1 = Algorithms.DFSPOIs(start,end,toGo,toAvoid);
@@ -378,11 +400,17 @@ public class ParisRouteController {
                         line.setStroke(Color.color(0,0,1,0.5));
                     }
                     line.setStrokeWidth(3);
-                    totalDistance += calculateDistance(current,next);
+                    totalDistance += Math.round(calculateDistance(current,next));
                     line.setUserData("pathLine");
                     ((Pane) imageView.getParent()).getChildren().add(line);
                 }
-                System.out.println(totalDistance);
+                if ("Depth First Search".equals(selectedAlgorithm)){
+                    DFSDistance.setText("DFS Distance: " + totalDistance);
+                } else if ("Breadth First Search".equals(selectedAlgorithm)){
+                    BFSDistance.setText("BFS Distance: "+ totalDistance);
+                } else {
+                    DijDistance.setText("Dijkstras Distance: "+ totalDistance);
+                }
             }
         }
     }
@@ -483,16 +511,4 @@ public class ParisRouteController {
 
 
 
-
-
-
 }
-
-
-
-
-
-
-
-
-
