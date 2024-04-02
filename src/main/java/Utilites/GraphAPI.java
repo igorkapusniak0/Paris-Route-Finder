@@ -1,21 +1,16 @@
 package Utilites;
 
 import Models.GraphNode;
-import Models.POI;
-import Models.Pixel;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.image.*;
 import java.util.ArrayList;
-import java.math.*;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.LinkedList;
 
-public class Utilities {
+public class GraphAPI {
 
     public static Image convertToBlackAndWhite(Image image) {
         if (image == null) return null;

@@ -3,7 +3,7 @@ package Controllers;
 import Models.GraphNode;
 import Utilites.Algorithms;
 import Utilites.Graph;
-import Utilites.Utilities;
+import Utilites.GraphAPI;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -80,9 +80,9 @@ public class ParisRouteController {
         setAlgorithmsCombo();
         POIs();
         POILinks();
-        blackAndWhiteImage = Utilities.convertToBlackAndWhite(parisMap);
+        blackAndWhiteImage = GraphAPI.convertToBlackAndWhite(parisMap);
         graph();
-        Utilities.graphConnections(blackAndWhiteImage, graph);
+        GraphAPI.graphConnections(blackAndWhiteImage, graph);
         startAndEndCombo();
         setPOICombo();
         test();
@@ -255,7 +255,7 @@ public class ParisRouteController {
         int width = (int) blackAndWhiteImage.getWidth();
         GraphNode[][] pixelGraph = new GraphNode[height][width];
         graph.setPixelGraph(pixelGraph);
-        Utilities.convertToPixels(blackAndWhiteImage, graph);
+        GraphAPI.convertToPixels(blackAndWhiteImage, graph);
     }
 
     private String theMatrix() {
@@ -468,10 +468,10 @@ public class ParisRouteController {
 
 
     private void POILinks(){
-        getPOIsLinked = Utilities.poiLinks(getPOIs);
+        getPOIsLinked = GraphAPI.poiLinks(getPOIs);
     }
     private void POIs(){
-        getPOIs = Utilities.readInDatabase();
+        getPOIs = GraphAPI.readInDatabase();
     }
     //private set
     private void test(){
