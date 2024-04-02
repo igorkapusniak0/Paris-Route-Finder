@@ -1,50 +1,87 @@
 package Utilites;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import Models.GraphNode;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 
-class AlgorithmsTest {
+public class AlgorithmsTest {
+
+    private List<GraphNode> nodes;
+    private Set<GraphNode> avoidSet;
 
     @BeforeEach
-    void setUp() {
-    }
+    public void setUp() {
+        nodes = new ArrayList<>();
+        avoidSet = new HashSet<>();
 
-    @AfterEach
-    void tearDown() {
-    }
+        GraphNode nodeA = new GraphNode("A", 0, 0, null);
+        GraphNode nodeB = new GraphNode("B", 10, 10, null);
+        GraphNode nodeC = new GraphNode("C", 20, 20, null);
+        GraphNode nodeD = new GraphNode("D", 30, 30, null);
 
-    @Test
-    void BFSAlgorithm() {
-    }
+        nodeA.connectToNodeUndirected(nodeB);
+        nodeB.connectToNodeUndirected(nodeC);
+        nodeC.connectToNodeUndirected(nodeD);
 
-    @Test
-    void BFSWithPOIs() {
-    }
-
-    @Test
-    void DFSAlgorithmAllPaths() {
+        nodes.addAll(Arrays.asList(nodeA, nodeB, nodeC, nodeD));
     }
 
     @Test
-    void DFSAlgorithm() {
+    public void testBFSAlgorithm() {
+        List<GraphNode> path = Algorithms.BFSAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
+        assertEquals(4, path.size());
+        assertTrue(path.containsAll(nodes));
     }
 
     @Test
-    void DFSPOIs() {
+    public void testDFSAlgorithm() {
+        List<GraphNode> path = Algorithms.DFSAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
+        assertNotNull(path);
     }
 
     @Test
-    void DFSAlgorithmAllPathsForGoSet() {
+    public void testDijkstraAlgorithm() {
+        LinkedList<GraphNode> path = Algorithms.dijkstraAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
+        assertNotNull(path);
+        assertEquals( 4, path.size());
     }
 
     @Test
-    void dijkstraAlgorithm() {
+    public void testBFSWithPOIs() {
+        List<GraphNode> POIs = new ArrayList<>(Arrays.asList(nodes.get(1), nodes.get(2)));
+        List<GraphNode> path = Algorithms.BFSWithPOIs(nodes.get(0), nodes.get(3), POIs, avoidSet);
+        assertTrue(path.containsAll(POIs));
+        assertEquals(Arrays.asList(nodes.get(0), nodes.get(3)), Arrays.asList(path.get(0), path.get(path.size() - 1)));
+    }
+    @Test
+    public void testDFSWithPOIs() {
+        List<GraphNode> POIs = new ArrayList<>(Arrays.asList(nodes.get(1), nodes.get(2)));
+        List<GraphNode> path = Algorithms.DFSPOIs(nodes.get(0), nodes.get(3), POIs, avoidSet);
+        assertTrue(path.containsAll(POIs));
+        assertEquals(Arrays.asList(nodes.get(0), nodes.get(3)), Arrays.asList(path.get(0), path.get(path.size() - 1)));
+    }
+    @Test
+    public void testDijWithPOIs() {
+        List<GraphNode> POIs = new ArrayList<>(Arrays.asList(nodes.get(1), nodes.get(2)));
+        List<GraphNode> path = Algorithms.dijkstraWithPOIs(nodes.get(0), nodes.get(3), POIs, avoidSet);
+        assertTrue(path.containsAll(POIs));
+        assertEquals(Arrays.asList(nodes.get(0), nodes.get(3)), Arrays.asList(path.get(0), path.get(path.size() - 1)));
     }
 
+
     @Test
-    void dijkstraWithPOIs() {
+    public void testNoPathScenario() {
+        avoidSet.add(nodes.get(1));
+        List<GraphNode> pathBFS = Algorithms.BFSAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
+        List<GraphNode> pathDFS = Algorithms.DFSAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
+        LinkedList<GraphNode> pathDijkstra = Algorithms.dijkstraAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
+
+        assertTrue(pathBFS.isEmpty());
+        assertNull(pathDFS);
+        assertNull( pathDijkstra);
     }
+
+
 }

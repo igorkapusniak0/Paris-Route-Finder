@@ -24,10 +24,10 @@ public class Algorithms {
             if (current.equals(endPixel)) {
                 List<GraphNode> path = new LinkedList<>();
                 for (GraphNode at = endPixel; at != null; at = cameFrom.get(at)) {
-                    System.out.println(at);
+                    //System.out.println(at);
                     path.add(0, at);
                 }
-                System.out.println(cameFrom);
+                //System.out.println(cameFrom);
                 return path;
             }
             for (GraphNode neighbour : current.adjList) {
@@ -55,11 +55,11 @@ public class Algorithms {
         Stack<List<GraphNode>> stack = new Stack<>();
         List<List<GraphNode>> allPaths = new ArrayList<>();
 
-        stack.push(Arrays.asList(start)); // Start path with the start node
+        stack.push(Arrays.asList(start));
 
         while (!stack.isEmpty()) {
             List<GraphNode> currentPath = stack.pop();
-            if (currentPath.size() > maxDepth) continue; // Skip paths that exceed maxDepth
+            if (currentPath.size() > maxDepth) continue;
             GraphNode current = currentPath.get(currentPath.size() - 1);
 
             if (current.equals(end)) {
@@ -91,12 +91,12 @@ public class Algorithms {
             if (current.equals(target)) {
                 LinkedList<GraphNode> path = new LinkedList<>();
                 for (GraphNode at = target; at != null; at = cameFrom.get(at)) {
-                    path.addFirst(at);// Efficiently add to the front
+                    path.addFirst(at);
                 }
                 return path;
             }
 
-            if (visited.add(current)) { // Only process nodes that haven't been visited
+            if (visited.add(current)) {
                 for (GraphNode neighbour : current.adjList) {
                     if (!visited.contains(neighbour) && !avoidSet.contains(neighbour)) {
                         stack.push(neighbour);
@@ -116,14 +116,12 @@ public class Algorithms {
         }
         return path;
     }
-    public static List<List<GraphNode>> DFSAlgorithmAllPathsForGoSet(GraphNode start, GraphNode end, int maxDepth, Set<GraphNode> avoidSet, List<GraphNode> goSet) {
+    public static List<List<GraphNode>> DFSAlgorithmAllPathsWithPOIs(GraphNode start, GraphNode end, int maxDepth, Set<GraphNode> avoidSet, List<GraphNode> goSet) {
         List<List<GraphNode>> allPaths = new ArrayList<>();
         if (goSet == null || goSet.isEmpty()) {
-            // If goSet is empty, find paths from start to end directly
             return DFSAlgorithmAllPaths(start, end, maxDepth, avoidSet);
         }
 
-        // Ensure the start and end nodes are correctly positioned in goSet
         if (!goSet.get(0).equals(start)) {
             goSet.add(0, start);
         }
@@ -131,31 +129,27 @@ public class Algorithms {
             goSet.add(end);
         }
 
-        // Find paths for each consecutive pair in goSet
         for (int i = 0; i < goSet.size() - 1; i++) {
             GraphNode currentStart = goSet.get(i);
             GraphNode currentEnd = goSet.get(i + 1);
             List<List<GraphNode>> pathsBetweenCurrentNodes = DFSAlgorithmAllPaths(currentStart, currentEnd, maxDepth, avoidSet);
 
             if (pathsBetweenCurrentNodes.isEmpty()) {
-                // If no path exists between any pair, return an empty list indicating failure
                 return new ArrayList<>();
             }
 
             if (allPaths.isEmpty()) {
-                // For the first pair, initialize allPaths with found paths
                 allPaths.addAll(pathsBetweenCurrentNodes);
             } else {
-                // Combine existing paths with new paths, respecting the order
                 List<List<GraphNode>> newAllPaths = new ArrayList<>();
                 for (List<GraphNode> existingPath : allPaths) {
                     for (List<GraphNode> newPath : pathsBetweenCurrentNodes) {
                         List<GraphNode> combinedPath = new ArrayList<>(existingPath);
-                        combinedPath.addAll(newPath.subList(1, newPath.size())); // Avoid duplicating the connecting node
+                        combinedPath.addAll(newPath.subList(1, newPath.size()));
                         newAllPaths.add(combinedPath);
                     }
                 }
-                allPaths = newAllPaths; // Update allPaths with combined paths
+                allPaths = newAllPaths;
             }
         }
 
@@ -163,18 +157,18 @@ public class Algorithms {
     }
 
     public static LinkedList<GraphNode> dijkstraAlgorithm(GraphNode startNode, GraphNode lookingFor, Set<GraphNode> avoidSet) {
-        Map<GraphNode, GraphNode> prevNode = new HashMap<>(); // Maps each node to its predecessor on the cheapest path
-        Map<GraphNode, Double> distances = new HashMap<>(); // Maps each node to its distance from the start
+        Map<GraphNode, GraphNode> prevNode = new HashMap<>();
+        Map<GraphNode, Double> distances = new HashMap<>();
         PriorityQueue<GraphNode> unencountered = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
 
-        // Initialise distances to all nodes as infinity, except for the start node
-        distances.put(startNode, 0.0); // Distance from start to start is 0
+
+        distances.put(startNode, 0.0);
         unencountered.add(startNode);
 
         while (!unencountered.isEmpty()) {
-            GraphNode currentNode = unencountered.poll(); // Node with the smallest distance
+            GraphNode currentNode = unencountered.poll();
             currentNode.listToHashMap();
-            if (currentNode.equals(lookingFor)) { // Found the target node
+            if (currentNode.equals(lookingFor)) {
                 LinkedList<GraphNode> path = new LinkedList<>();
                 for (GraphNode at = lookingFor; at != null; at = prevNode.get(at)) {
                     path.addFirst(at);
@@ -182,7 +176,6 @@ public class Algorithms {
                 return path;
             }
 
-            // Iterate over the adjacency list (map) of the current node to update distances
             for (Map.Entry<GraphNode, Double> adjEntry : currentNode.adjacencies.entrySet()) {
                 GraphNode adjNode = adjEntry.getKey();
                 Double edgeCost = adjEntry.getValue();
@@ -196,7 +189,7 @@ public class Algorithms {
             }
         }
 
-        return null; // No path found
+        return null;
     }
     public static List<GraphNode> dijkstraWithPOIs(GraphNode start,GraphNode end,List<GraphNode> goSet, Set<GraphNode> avoidSet){
         List<GraphNode> path = new LinkedList<>();

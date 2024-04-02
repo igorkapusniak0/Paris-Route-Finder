@@ -3,7 +3,7 @@ package Controllers;
 import Models.GraphNode;
 import Utilites.Algorithms;
 import Utilites.Graph;
-import Utilites.GraphAPI;
+import Utilites.API;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -80,9 +80,9 @@ public class ParisRouteController {
         setAlgorithmsCombo();
         POIs();
         POILinks();
-        blackAndWhiteImage = GraphAPI.convertToBlackAndWhite(parisMap);
+        blackAndWhiteImage = API.convertToBlackAndWhite(parisMap);
         graph();
-        GraphAPI.graphConnections(blackAndWhiteImage, graph);
+        API.graphConnections(blackAndWhiteImage, graph);
         startAndEndCombo();
         setPOICombo();
         test();
@@ -255,7 +255,7 @@ public class ParisRouteController {
         int width = (int) blackAndWhiteImage.getWidth();
         GraphNode[][] pixelGraph = new GraphNode[height][width];
         graph.setPixelGraph(pixelGraph);
-        GraphAPI.convertToPixels(blackAndWhiteImage, graph);
+        API.convertToPixels(blackAndWhiteImage, graph);
     }
 
     private String theMatrix() {
@@ -282,9 +282,9 @@ public class ParisRouteController {
                     int[] coordinates = new int[2];
                     coordinates[0] = (int) mouseEvent.getX();
                     coordinates[1] = (int) mouseEvent.getY();
-                    System.out.println(coordinates[0] + ", " + coordinates[1]);
+                    //System.out.println(coordinates[0] + ", " + coordinates[1]);
                     if (graph.pixelGraph[coordinates[1]][coordinates[0]] != null){
-                        System.out.println("pixel");
+                       // System.out.println("pixel");
                     }
                     Circle circle = new Circle();
                     circle.setFill(Color.BLUE);
@@ -373,7 +373,7 @@ public class ParisRouteController {
         String selectedAlgorithm = algorithmsCombo.getValue();
         if(start!=null && end!=null){
             if ("Depth First Search".equals(selectedAlgorithm)){
-                allPaths = Algorithms.DFSAlgorithmAllPathsForGoSet(start,end,10,toAvoid,toGo);
+                allPaths = Algorithms.DFSAlgorithmAllPathsWithPOIs(start,end,10,toAvoid,toGo);
                 addDFSRoutes();
                 path1 = findShortestPath(start,end);
                 path1 = Algorithms.DFSPOIs(start,end,toGo,toAvoid);
@@ -387,7 +387,7 @@ public class ParisRouteController {
             }
             if (path1!=null){
                 double totalDistance =0;
-                System.out.println(path1.size());
+                //System.out.println(path1.size());
                 for (int i = 0; i<path1.size()-1;i++){
                     GraphNode current = path1.get(i);
                     GraphNode next = path1.get(i+1);
@@ -425,14 +425,14 @@ public class ParisRouteController {
         if (startCoord!=null && endCoord!=null){
             startPixel = graph.pixelGraph[startCoord[1]][startCoord[0]];
             endPixel = graph.pixelGraph[endCoord[1]][endCoord[0]];
-            System.out.println(startPixel + ", " + endPixel);
+            //System.out.println(startPixel + ", " + endPixel);
             if (startPixel!=null && endPixel!=null){
                 path = Algorithms.BFSAlgorithm(startPixel,endPixel,new HashSet<>());
             }
         }
         if (path!=null){
             for (GraphNode coords : path) {
-                System.out.println(coords.getX() + ", " + coords.getY());
+                //System.out.println(coords.getX() + ", " + coords.getY());
                 int radius = 1;
                 Circle circle = new Circle();
                 circle.setFill(Color.GREEN);
@@ -468,10 +468,10 @@ public class ParisRouteController {
 
 
     private void POILinks(){
-        getPOIsLinked = GraphAPI.poiLinks(getPOIs);
+        getPOIsLinked = API.poiLinks(getPOIs);
     }
     private void POIs(){
-        getPOIs = GraphAPI.readInDatabase();
+        getPOIs = API.readInDatabase();
     }
     //private set
     private void test(){

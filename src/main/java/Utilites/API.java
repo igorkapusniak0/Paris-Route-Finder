@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import java.io.*;
 
-public class GraphAPI {
+public class API {
 
     public static Image convertToBlackAndWhite(Image image) {
         if (image == null) return null;
@@ -34,7 +34,7 @@ public class GraphAPI {
 
         return writableImage;
     }
-    private static boolean matchesColour(Color color, Color targetColour, double tolerance) {
+    public static boolean matchesColour(Color color, Color targetColour, double tolerance) {
         boolean redDifference = Math.abs(targetColour.getRed() - color.getRed()) <= tolerance;
         boolean greenDifference = Math.abs(targetColour.getGreen() - color.getGreen()) <= tolerance;
         boolean blueDifference = Math.abs(targetColour.getBlue() - color.getBlue()) <= tolerance;

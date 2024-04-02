@@ -55,9 +55,7 @@ public class GraphNode {
         setY(y);
         setIcon(icon);
     }
-    /*public void connectToNodeDirected(GraphNode<T> destNode) {
-        adjList.add(destNode);
-    }*/
+
     public void setIcon(Image icon){
         this.icon = icon;
     }
