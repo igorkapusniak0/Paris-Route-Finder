@@ -104,6 +104,8 @@ public class ParisRouteController {
             startCombo.getItems().add(waypoint);
             endCombo.getItems().add(waypoint);
             getPOIs.add(waypoint);
+            POICombo.getItems().add(waypoint);
+            avoidCombo.getItems().add(waypoint);
             POILinks();
             drawCircle(coord,"General");
             drawWaypoint(waypoint);

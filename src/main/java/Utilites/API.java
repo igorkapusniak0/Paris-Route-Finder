@@ -116,7 +116,9 @@ public class API {
                     int yDiff = Math.abs(y2-y1);
                     double distance = Math.sqrt((Math.pow(xDiff,2))+(Math.pow(yDiff,2)));
                     if (poi2.getLinks()!=null && !poi2.getLinks().contains(poi) && !poi.getLinks().contains(poi2)){
-                        if (distance<=50){
+                        if (distance<=50
+
+                        ){
                             poi.connectToNodeUndirected(poi2);
                         } else if (poi.getLinks().size()<=4 && distance<=200 && poi2.getLinks().size()<=4  && !poi2.getLinks().contains(poi) && !poi.getLinks().contains(poi2)) {
                             poi.connectToNodeUndirected(poi2);

@@ -9,21 +9,21 @@ import java.util.LinkedList;
 public class Algorithms {
 
 
-    public static List<GraphNode> BFSAlgorithm(GraphNode startPixel, GraphNode endPixel, Set<GraphNode> avoidSet) {
+    public static List<GraphNode> BFSAlgorithm(GraphNode start, GraphNode end, Set<GraphNode> avoidSet) {
         Queue<GraphNode> queue = new LinkedList<>();
         Map<GraphNode, GraphNode> cameFrom = new HashMap<>();
         Set<GraphNode> visited = new HashSet<>();
 
-        queue.add(startPixel);
-        visited.add(startPixel);
-        cameFrom.put(startPixel, null);
+        queue.add(start);
+        visited.add(start);
+        cameFrom.put(start, null);
 
         while (!queue.isEmpty()) {
             GraphNode current = queue.remove();
 
-            if (current.equals(endPixel)) {
+            if (current.equals(end)) {
                 List<GraphNode> path = new LinkedList<>();
-                for (GraphNode at = endPixel; at != null; at = cameFrom.get(at)) {
+                for (GraphNode at = end; at != null; at = cameFrom.get(at)) {
                     //System.out.println(at);
                     path.add(0, at);
                 }
@@ -79,7 +79,7 @@ public class Algorithms {
     }
 
 
-    public static List<GraphNode> DFSAlgorithm(GraphNode start, GraphNode target, Set<GraphNode> avoidSet) {
+    public static List<GraphNode> DFSAlgorithm(GraphNode start, GraphNode end, Set<GraphNode> avoidSet) {
         Stack<GraphNode> stack = new Stack<>();
         Map<GraphNode, GraphNode> cameFrom = new HashMap<>();
         Set<GraphNode> visited = new HashSet<>();
@@ -88,9 +88,9 @@ public class Algorithms {
         while (!stack.isEmpty()) {
             GraphNode current = stack.pop();
 
-            if (current.equals(target)) {
+            if (current.equals(end)) {
                 LinkedList<GraphNode> path = new LinkedList<>();
-                for (GraphNode at = target; at != null; at = cameFrom.get(at)) {
+                for (GraphNode at = end; at != null; at = cameFrom.get(at)) {
                     path.addFirst(at);
                 }
                 return path;
@@ -156,21 +156,21 @@ public class Algorithms {
         return allPaths;
     }
 
-    public static LinkedList<GraphNode> dijkstraAlgorithm(GraphNode startNode, GraphNode lookingFor, Set<GraphNode> avoidSet) {
+    public static LinkedList<GraphNode> dijkstraAlgorithm(GraphNode start, GraphNode end, Set<GraphNode> avoidSet) {
         Map<GraphNode, GraphNode> prevNode = new HashMap<>();
         Map<GraphNode, Double> distances = new HashMap<>();
         PriorityQueue<GraphNode> unencountered = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
 
 
-        distances.put(startNode, 0.0);
-        unencountered.add(startNode);
+        distances.put(start, 0.0);
+        unencountered.add(start);
 
         while (!unencountered.isEmpty()) {
             GraphNode currentNode = unencountered.poll();
             currentNode.listToHashMap();
-            if (currentNode.equals(lookingFor)) {
+            if (currentNode.equals(end)) {
                 LinkedList<GraphNode> path = new LinkedList<>();
-                for (GraphNode at = lookingFor; at != null; at = prevNode.get(at)) {
+                for (GraphNode at = end; at != null; at = prevNode.get(at)) {
                     path.addFirst(at);
                 }
                 return path;
