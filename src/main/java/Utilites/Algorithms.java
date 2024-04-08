@@ -156,7 +156,7 @@ public class Algorithms {
         return allPaths;
     }
 
-    public static LinkedList<GraphNode> dijkstraAlgorithm(GraphNode start, GraphNode end, Set<GraphNode> avoidSet) {
+    public static LinkedList<GraphNode> dijkstraAlgorithm(GraphNode start, GraphNode end, Set<GraphNode> avoidSet,boolean shortestPath) {
         Map<GraphNode, GraphNode> prevNode = new HashMap<>();
         Map<GraphNode, Double> distances = new HashMap<>();
         PriorityQueue<GraphNode> unencountered = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
@@ -167,7 +167,11 @@ public class Algorithms {
 
         while (!unencountered.isEmpty()) {
             GraphNode currentNode = unencountered.poll();
-            currentNode.listToHashMap();
+            if (shortestPath==true){
+                currentNode.listToHashMapShortest();
+            }else{
+                currentNode.listToHashMapHistorical();
+            }
             if (currentNode.equals(end)) {
                 LinkedList<GraphNode> path = new LinkedList<>();
                 for (GraphNode at = end; at != null; at = prevNode.get(at)) {
@@ -191,12 +195,12 @@ public class Algorithms {
 
         return null;
     }
-    public static List<GraphNode> dijkstraWithPOIs(GraphNode start,GraphNode end,List<GraphNode> goSet, Set<GraphNode> avoidSet){
+    public static List<GraphNode> dijkstraWithPOIs(GraphNode start,GraphNode end,List<GraphNode> goSet, Set<GraphNode> avoidSet,boolean shortestPath){
         List<GraphNode> path = new LinkedList<>();
         goSet.add(0,start);
         goSet.add(goSet.size(),end);
         for (int i = 0; i<goSet.size()-1;i++){
-            path.addAll(dijkstraAlgorithm(goSet.get(i),goSet.get(i+1),avoidSet));
+            path.addAll(dijkstraAlgorithm(goSet.get(i),goSet.get(i+1),avoidSet, shortestPath));
         }
         return path;
     }

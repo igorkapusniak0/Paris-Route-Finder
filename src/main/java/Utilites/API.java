@@ -50,7 +50,7 @@ public class API {
         for (int y = 0; y<width;y++){
             for (int x = 0; x<height;x++){
                 if(pixelReader.getColor(x,y).equals(Color.WHITE)){
-                    graph.pixelGraph[y][x] = new GraphNode(null,x,y,null);
+                    graph.pixelGraph[y][x] = new GraphNode(null,x,y,null,0);
                 }else{
                     graph.pixelGraph[y][x] = null;
                 }
@@ -94,7 +94,7 @@ public class API {
                     e.printStackTrace();
                     iconImage = null;
                 }
-                GraphNode poi = new GraphNode(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()),iconImage);
+                GraphNode poi = new GraphNode(values[0].trim(),Integer.parseInt(values[1].trim()),Integer.parseInt(values[2].trim()),iconImage,Integer.parseInt(values[4].trim()));
                 POIs.add(poi);
             }
         } catch (IOException e) {

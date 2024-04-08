@@ -22,11 +22,11 @@ class APITest {
     void setUp() {
         // Setup test data - creating some POIs with varying distances
         POIs = new ArrayList<>();
-        POIs.add(new GraphNode("POI1", 0, 0, null));
-        POIs.add(new GraphNode("POI2", 30, 40, null));
-        POIs.add(new GraphNode("POI3", 200, 0, null));
-        POIs.add(new GraphNode("POI4", 300, 0, null));
-        POIs.add(new GraphNode("POI5", 500, 500, null));
+        POIs.add(new GraphNode("POI1", 0, 0, null,0));
+        POIs.add(new GraphNode("POI2", 30, 40, null,0));
+        POIs.add(new GraphNode("POI3", 200, 0, null,0));
+        POIs.add(new GraphNode("POI4", 300, 0, null,0));
+        POIs.add(new GraphNode("POI5", 500, 500, null,0));
     }
     @Test
     void testMatchesColour() {

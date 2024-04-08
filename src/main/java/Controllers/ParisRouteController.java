@@ -99,7 +99,7 @@ public class ParisRouteController {
                 e.printStackTrace();
                 waypointImage = null;
             }
-            GraphNode waypoint = new GraphNode(waypointTextField.getText(),coord[0],coord[1],waypointImage);
+            GraphNode waypoint = new GraphNode(waypointTextField.getText(),coord[0],coord[1],waypointImage,0);
             waypointListView.getItems().add(waypoint);
             startCombo.getItems().add(waypoint);
             endCombo.getItems().add(waypoint);
@@ -116,7 +116,8 @@ public class ParisRouteController {
         algorithmsCombo.getItems().addAll(
                 "Depth First Search",
                 "Breadth First Search",
-                "Dijkstra's Algorithm");
+                "Shortest Dijkstra's Algorithm",
+                "Historical Dijkstra's Algorithm");
     }
     @FXML public void getRouteLimit(){
         int limit = 20;
@@ -384,8 +385,11 @@ public class ParisRouteController {
                 path1 = Algorithms.BFSWithPOIs(start,end,toGo,toAvoid);
 
             }
-            if ("Dijkstra's Algorithm".equals(selectedAlgorithm)){
-                path1 = Algorithms.dijkstraWithPOIs(start,end,toGo,toAvoid);
+            if ("Shortest Dijkstra's Algorithm".equals(selectedAlgorithm)){
+                path1 = Algorithms.dijkstraWithPOIs(start,end,toGo,toAvoid,true);
+            }
+            if ("Historical Dijkstra's Algorithm".equals(selectedAlgorithm)){
+                path1 = Algorithms.dijkstraWithPOIs(start,end,toGo,toAvoid,false);
             }
             if (path1!=null){
                 double totalDistance =0;
@@ -398,8 +402,10 @@ public class ParisRouteController {
                         line.setStroke(Color.color(1,0,0,0.5));
                     } else if ("Breadth First Search".equals(selectedAlgorithm)){
                         line.setStroke(Color.color(0,1,0,0.5));
-                    } else {
+                    } else if ("Shortest Dijkstra's Algorithm".equals(selectedAlgorithm)){
                         line.setStroke(Color.color(0,0,1,0.5));
+                    } else {
+                        line.setStroke(Color.color(1,0,1,0.5));
                     }
                     line.setStrokeWidth(3);
                     totalDistance += Math.round(calculateDistance(current,next));

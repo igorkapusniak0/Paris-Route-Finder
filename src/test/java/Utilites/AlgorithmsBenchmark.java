@@ -31,12 +31,12 @@ public class AlgorithmsBenchmark {
 
     @Setup
     public void setup() {
-        startNode = new GraphNode("Start", 0, 0, null);
-        endNode = new GraphNode("End", 100, 100, null);
+        startNode = new GraphNode("Start", 0, 0, null,0);
+        endNode = new GraphNode("End", 100, 100, null,0);
 
         List<GraphNode> additionalNodes = new ArrayList<>();
         for(int i = 1; i <= 12; i++) {
-            GraphNode newNode = new GraphNode("Node" + i, i * 7, i * 11, null);
+            GraphNode newNode = new GraphNode("Node" + i, i * 7, i * 11, null,0);
             additionalNodes.add(newNode);
         }
 
@@ -81,14 +81,14 @@ public class AlgorithmsBenchmark {
 
     @Benchmark
     public void benchmarkDijkstra() {
-        startNode.listToHashMap();
-        Algorithms.dijkstraAlgorithm(startNode, endNode, avoidSet);
+        startNode.listToHashMapShortest();
+        Algorithms.dijkstraAlgorithm(startNode, endNode, avoidSet,true);
     }
 
     @Benchmark
     public void benchmarkDijkstraWithPOIs() {
-        startNode.listToHashMap();
-        Algorithms.dijkstraWithPOIs(startNode, endNode, new LinkedList<>(poiList), avoidSet);
+        startNode.listToHashMapShortest();
+        Algorithms.dijkstraWithPOIs(startNode, endNode, new LinkedList<>(poiList), avoidSet,true);
     }
 
 

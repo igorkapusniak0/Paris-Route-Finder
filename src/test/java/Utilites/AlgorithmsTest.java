@@ -16,10 +16,10 @@ public class AlgorithmsTest {
         nodes = new ArrayList<>();
         avoidSet = new HashSet<>();
 
-        GraphNode nodeA = new GraphNode("A", 0, 0, null);
-        GraphNode nodeB = new GraphNode("B", 10, 10, null);
-        GraphNode nodeC = new GraphNode("C", 20, 20, null);
-        GraphNode nodeD = new GraphNode("D", 30, 30, null);
+        GraphNode nodeA = new GraphNode("A", 0, 0, null,5);
+        GraphNode nodeB = new GraphNode("B", 10, 10, null,5);
+        GraphNode nodeC = new GraphNode("C", 20, 20, null,5);
+        GraphNode nodeD = new GraphNode("D", 30, 30, null,5);
 
         nodeA.connectToNodeUndirected(nodeB);
         nodeB.connectToNodeUndirected(nodeC);
@@ -43,7 +43,7 @@ public class AlgorithmsTest {
 
     @Test
     public void testDijkstraAlgorithm() {
-        LinkedList<GraphNode> path = Algorithms.dijkstraAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
+        LinkedList<GraphNode> path = Algorithms.dijkstraAlgorithm(nodes.get(0), nodes.get(3), avoidSet,true);
         assertNotNull(path);
         assertEquals( 4, path.size());
     }
@@ -65,7 +65,7 @@ public class AlgorithmsTest {
     @Test
     public void testDijWithPOIs() {
         List<GraphNode> POIs = new ArrayList<>(Arrays.asList(nodes.get(1), nodes.get(2)));
-        List<GraphNode> path = Algorithms.dijkstraWithPOIs(nodes.get(0), nodes.get(3), POIs, avoidSet);
+        List<GraphNode> path = Algorithms.dijkstraWithPOIs(nodes.get(0), nodes.get(3), POIs, avoidSet,true);
         assertTrue(path.containsAll(POIs));
         assertEquals(Arrays.asList(nodes.get(0), nodes.get(3)), Arrays.asList(path.get(0), path.get(path.size() - 1)));
     }
@@ -76,7 +76,7 @@ public class AlgorithmsTest {
         avoidSet.add(nodes.get(1));
         List<GraphNode> pathBFS = Algorithms.BFSAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
         List<GraphNode> pathDFS = Algorithms.DFSAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
-        LinkedList<GraphNode> pathDijkstra = Algorithms.dijkstraAlgorithm(nodes.get(0), nodes.get(3), avoidSet);
+        LinkedList<GraphNode> pathDijkstra = Algorithms.dijkstraAlgorithm(nodes.get(0), nodes.get(3), avoidSet,true);
 
         assertTrue(pathBFS.isEmpty());
         assertNull(pathDFS);

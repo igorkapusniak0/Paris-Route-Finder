@@ -13,8 +13,8 @@ class GraphNodeTest {
     @BeforeEach
     void setUp() {
 
-        nodeA = new GraphNode("Node A", 0, 0, null);
-        nodeB = new GraphNode("Node B", 3, 4, null);
+        nodeA = new GraphNode("Node A", 0, 0, null,0);
+        nodeB = new GraphNode("Node B", 3, 4, null,0);
     }
 
     @Test
@@ -36,7 +36,7 @@ class GraphNodeTest {
     @Test
     void testListToHashMap() {
         nodeA.connectToNodeUndirected(nodeB);
-        nodeA.listToHashMap();
+        nodeA.listToHashMapShortest();
         assertTrue(nodeA.adjacencies.containsKey(nodeB));
         assertEquals(5.0, nodeA.adjacencies.get(nodeB), 0.01);
     }
